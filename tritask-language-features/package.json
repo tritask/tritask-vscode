@@ -1,0 +1,380 @@
+{
+	"name": "tritask-language-features",
+	"displayName": "Tritask command",
+	"description": "Tritask commands for .trita files.",
+	"publisher": "stakiran",
+	"repository": "https://github.com/tritask/tritask-vscode",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.36.0"
+	},
+	"main": "./out/extension.js",
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguages:trita",
+		"onLanguages:plaintext",
+		"onCommand:tritask.inbox.add",
+		"onCommand:tritask.task.add",
+		"onCommand:tritask.task.copy",
+		"onCommand:tritask.task.start",
+		"onCommand:tritask.task.end",
+		"onCommand:tritask.task.walk",
+		"onCommand:tritask.task.walk.1",
+		"onCommand:tritask.task.walk.today",
+		"onCommand:tritask.sort",
+		"onCommand:tritask.menu.show",
+		"onCommand:tritask.jump.starting",
+		"onCommand:tritask.jump.separator.prev",
+		"onCommand:tritask.jump.separator.next",
+		"onCommand:tritask.completion.simple",
+		"onCommand:tritask.report.dialog"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "tritask.dummy",
+				"title": "================",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.inbox.add",
+				"title": "Add inbox",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.task.add",
+				"title": "Add task",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.task.copy",
+				"title": "Copy task",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.task.start",
+				"title": "Start task",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.task.end",
+				"title": "End task",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.task.walk",
+				"title": "Walk task",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.task.walk.1",
+				"title": "Walk task to next day",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.task.walk.today",
+				"title": "Walk task to today",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.sort",
+				"title": "Sort",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.menu.show",
+				"title": "Show menu",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.jump.starting",
+				"title": "Jump to starting task",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.jump.separator.next",
+				"title": "Jump to next separator",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.jump.separator.prev",
+				"title": "Jump to previous separator",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.completion.simple",
+				"title": "Completion date",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.report.dialog",
+				"title": "Report today",
+				"category": "Tritask"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "tritask.dummy",
+					"when": "resourceExtname == .DO_NOT_SHOW"
+				},
+				{
+					"command": "tritask.inbox.add",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.add",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.copy",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.start",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.end",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.walk",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.walk.1",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.walk.today",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.sort",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.menu.show",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.jump.starting",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.jump.separator.next",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.jump.separator.prev",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.completion.simple",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.report.dialog",
+					"when": "resourceExtname == .trita"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "tritask.dummy",
+					"group": "navigation@10",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.dummy",
+					"group": "navigation@20",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.dummy",
+					"group": "navigation@30",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.inbox.add",
+					"group": "navigation@2",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.add",
+					"group": "navigation@1",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.copy",
+					"group": "navigation@3",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.start",
+					"group": "navigation@4",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.end",
+					"group": "navigation@5",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.walk",
+					"group": "navigation@11",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.walk.1",
+					"group": "navigation@12",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.walk.today",
+					"group": "navigation@13",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.sort",
+					"group": "navigation@21",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.jump.starting",
+					"group": "navigation@22",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.jump.separator.prev",
+					"group": "navigation@23",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.jump.separator.next",
+					"group": "navigation@24",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.completion.simple",
+					"group": "navigation@25",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.report.dialog",
+					"group": "navigation@31",
+					"when": "resourceExtname == .trita"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "tritask.menu.show",
+				"key": "alt+m",
+				"mac": "alt+m",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.sort",
+				"key": "alt+z",
+				"mac": "alt+z",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.jump.starting",
+				"key": "alt+j",
+				"mac": "alt+j",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.jump.separator.prev",
+				"key": "alt+up",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.jump.separator.next",
+				"key": "alt+down",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.task.add",
+				"key": "alt+a",
+				"mac": "alt+a",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.inbox.add",
+				"key": "alt+x",
+				"mac": "alt+i",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.task.copy",
+				"key": "alt+c",
+				"mac": "alt+c",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.task.start",
+				"key": "alt+s",
+				"mac": "alt+s",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.task.end",
+				"key": "alt+e",
+				"mac": "alt+x",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.task.walk",
+				"key": "alt+d",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.task.walk.1",
+				"key": "alt+f1",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.task.walk.today",
+				"key": "alt+t",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.completion.simple",
+				"key": "alt+p",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.report.dialog",
+				"key": "alt+.",
+				"when": "resourceExtname == .trita"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.12.21",
+		"@types/vscode": "^1.36.0",
+		"glob": "^7.1.4",
+		"mocha": "^6.1.4",
+		"typescript": "^3.3.1",
+		"tslint": "^5.12.1",
+		"vscode-test": "^1.0.2"
+	},
+	"dependencies": {
+		"child_process": "^1.0.2",
+		"moment": "^2.24.0"
+	}
+}

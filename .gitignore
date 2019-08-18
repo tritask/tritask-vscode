@@ -1,0 +1,8 @@
+# tritask datafile
+*.trita
+
+# built binary
+*.vsix
+
+# built distribution directory
+tritask-vscode/

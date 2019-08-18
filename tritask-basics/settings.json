@@ -1,0 +1,155 @@
+{
+    "files.associations": {
+        "*.trita": "tritask"
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "name": "SortMarkTodayDone",
+                "scope": [
+                    "sortmark.today.done.trita"
+                ],
+                "settings": {
+                    "foreground": "#ff7777"
+                }
+            },
+            {
+                "name": "SortMarkTodayTodo",
+                "scope": [
+                    "sortmark.today.todo.trita"
+                ],
+                "settings": {
+                    "foreground": "#ff0000"
+                }
+            },
+            {
+                "name": "SortMarkTomorrow",
+                "scope": [
+                    "sortmark.tomorrow.trita"
+                ],
+                "settings": {
+                    "foreground": "#00ff00"
+                }
+            },
+            {
+                "name": "SortMarkYesterday",
+                "scope": [
+                    "sortmark.yesterday.trita"
+                ],
+                "settings": {
+                    "foreground": "#888"
+                }
+            },
+            {
+                "name": "StartTime",
+                "scope": [
+                    "time.start.trita"
+                ],
+                "settings": {
+                    "foreground": "#faf"
+                }
+            },
+            {
+                "name": "EndTime",
+                "scope": [
+                    "time.end.trita"
+                ],
+                "settings": {
+                    "foreground": "#afa"
+                }
+            },
+            {
+                "name": "AttributeKey",
+                "scope": [
+                    "attribute.key.trita"
+                ],
+                "settings": {
+                    "foreground": "#44ffcc"
+                }
+            },
+            {
+                "name": "AttributeSeparator",
+                "scope": [
+                    "attribute.separator.trita"
+                ],
+                "settings": {
+                    "foreground": "#44ffcc"
+                }
+            },
+            {
+                "name": "AttributeValue",
+                "scope": [
+                    "attribute.value.trita"
+                ],
+                "settings": {
+                    "foreground": "#44ffcc"
+                }
+            },
+            {
+                "name": "Date",
+                "scope": [
+                    "date.date.trita"
+                ],
+                "settings": {
+                    "foreground": "#ccf"
+                }
+            },
+            {
+                "name": "DayOfWeek",
+                "scope": [
+                    "date.dayofweek.trita"
+                ],
+                "settings": {
+                    "foreground": "#ccf"
+                }
+            },
+            {
+                "name": "DayOfWeek-Saturday",
+                "scope": [
+                    "date.dayofweek.saturday.trita"
+                ],
+                "settings": {
+                    "foreground": "#0066ff"
+                }
+            },
+            {
+                "name": "DayOfWeek-Sunday",
+                "scope": [
+                    "date.dayofweek.sunday.trita"
+                ],
+                "settings": {
+                    "foreground": "#ff0000"
+                }
+            },
+            {
+                "name": "DayOfWeek-Weekday",
+                "scope": [
+                    "date.dayofweek.weekday.trita"
+                ],
+                "settings": {
+                    "foreground": "#fcc"
+                }
+            },
+            {
+                "name": "LineSeparator",
+                "scope": [
+                    "line.separator.trita"
+                ],
+                "settings": {
+                    "foreground": "#ffff00",
+                    "fontStyle" : "bold underline"
+                }
+            },
+            {
+                "name": "LineStartingTask",
+                "scope": [
+                    "line.starting.trita"
+                ],
+                "settings": {
+                    "foreground": "#00ffff",
+                    "fontStyle" : "italic"
+                }
+            }
+        ]
+    }
+}
