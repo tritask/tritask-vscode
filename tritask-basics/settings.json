@@ -1,4 +1,7 @@
 {
+    "[tritask]": {
+        "editor.quickSuggestions": false
+    },
     "files.associations": {
         "*.trita": "tritask"
     },
