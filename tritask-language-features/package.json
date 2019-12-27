@@ -291,11 +291,13 @@
 			{
 				"command": "tritask.jump.separator.prev",
 				"key": "alt+up",
+				"mac": "ctrl+up",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.jump.separator.next",
 				"key": "alt+down",
+				"mac": "ctrl+down",
 				"when": "resourceExtname == .trita"
 			},
 			{
