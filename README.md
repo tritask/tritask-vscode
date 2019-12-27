@@ -15,6 +15,10 @@ MacOS 10.14(Mojave) でも一部開発は行っていましたが、たぶん動
 ## ディレクトリ構成について
 シンタックスハイライトをつかさどる tritask-basics と、各種操作をつかさどる tritask-language-features があります。
 
+## バージョン管理について
+- master ブランチが安定しているとは限りません
+- 区切りの良いバージョンはタグを切ってリリースしています
+
 ## インストール
 - 1: tritask-basics の vsix ファイルを VSCode にインストールする
 - 2: tritask-basics の settings.json を、あなたの settings.json に追記する
