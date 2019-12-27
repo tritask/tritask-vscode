@@ -4,7 +4,7 @@
 	"description": "Tritask commands for .trita files.",
 	"publisher": "stakiran",
 	"repository": "https://github.com/tritask/tritask-vscode",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
