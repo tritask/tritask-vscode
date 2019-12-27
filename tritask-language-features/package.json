@@ -273,19 +273,19 @@
 			{
 				"command": "tritask.menu.show",
 				"key": "alt+m",
-				"mac": "alt+m",
+				"mac": "ctrl+m",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.sort",
 				"key": "alt+z",
-				"mac": "alt+z",
+				"mac": "ctrl+z",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.jump.starting",
 				"key": "alt+j",
-				"mac": "alt+j",
+				"mac": "ctrl+j",
 				"when": "resourceExtname == .trita"
 			},
 			{
