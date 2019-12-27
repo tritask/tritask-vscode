@@ -301,46 +301,49 @@
 			{
 				"command": "tritask.task.add",
 				"key": "alt+a",
-				"mac": "alt+a",
+				"mac": "ctrl+a",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.inbox.add",
 				"key": "alt+x",
-				"mac": "alt+i",
+				"mac": "ctrl+i",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.task.copy",
 				"key": "alt+c",
-				"mac": "alt+c",
+				"mac": "ctrl+c",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.task.start",
 				"key": "alt+s",
-				"mac": "alt+s",
+				"mac": "ctrl+s",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.task.end",
 				"key": "alt+e",
-				"mac": "alt+x",
+				"mac": "ctrl+e",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.task.walk",
 				"key": "alt+d",
+				"mac": "ctrl+d",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.task.walk.1",
 				"key": "alt+f1",
+				"mac": "ctrl+f1",
 				"when": "resourceExtname == .trita"
 			},
 			{
 				"command": "tritask.task.walk.today",
 				"key": "alt+t",
+				"mac": "ctrl+t",
 				"when": "resourceExtname == .trita"
 			},
 			{
