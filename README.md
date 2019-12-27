@@ -8,9 +8,9 @@ VSCode 版 Tritask です。
 - Windows 7+
 - Python 3.6+
 
-MacOS 10.14(Mojave) でも一部開発は行っていましたが、たぶん動きません。
+内蔵コマンド(helper.py)が Python 製なので Python も必須です。
 
-また内蔵コマンド(helper.py)が Python 製なので Python も必須です。
+MacOS 10.14(Mojave) でも一部開発は行っていましたが、まだ動きません。
 
 ## ディレクトリ構成について
 シンタックスハイライトをつかさどる tritask-basics と、各種操作をつかさどる tritask-language-features があります。
