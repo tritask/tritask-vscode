@@ -1,3 +1,4 @@
+/* tslint:disable */
 import * as vscode from 'vscode';
 
 var moment = require('moment');
@@ -64,7 +65,8 @@ function isSelected(){
 function getHelperCommandline(){
 	let helperFullpath = getHelperFullpath();
 	let tritaFullpath = getFullpathOfActiveTextEditor();
-	let commandLine = `python ${helperFullpath} -i ${tritaFullpath}`;
+	//let commandLine = `python ${helperFullpath} -i ${tritaFullpath}`;
+	let commandLine = `python3 ${helperFullpath} -i ${tritaFullpath}`;
 	return commandLine;
 }
 

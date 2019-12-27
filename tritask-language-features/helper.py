@@ -70,7 +70,6 @@ def dp(msg):
 
 def abort(msg):
     print('Error: {0}'.format(msg))
-    os.system('pause')
     exit(1)
 
 def assert_y(y, lines):
