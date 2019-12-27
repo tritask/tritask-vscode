@@ -65,7 +65,7 @@ function isSelected(){
 function getHelperCommandline(){
 	let helperFullpath = getHelperFullpath();
 	let tritaFullpath = getFullpathOfActiveTextEditor();
-	//let commandLine = `python ${helperFullpath} -i ${tritaFullpath}`;
+	// Use not `python` but `python3` because works on MacOS.
 	let commandLine = `python3 ${helperFullpath} -i ${tritaFullpath}`;
 	return commandLine;
 }
