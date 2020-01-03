@@ -3,6 +3,7 @@
 
 # built binary
 *.vsix
+*.zip
 
 # built distribution directory
 tritask-vscode/
