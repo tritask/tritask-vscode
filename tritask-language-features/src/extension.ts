@@ -1,4 +1,3 @@
-/* tslint:disable */
 import * as vscode from 'vscode';
 
 var moment = require('moment');
