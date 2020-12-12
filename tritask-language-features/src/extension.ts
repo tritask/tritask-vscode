@@ -359,7 +359,7 @@ function doSort(){
 
 	doSave();
 
-	exec(commandLine, (err:any, stdout:any, stderr:any) => {
+	exec(commandLine, (err:any) => {
 		if(err){
 			console.log(err);
 		}
@@ -381,7 +381,7 @@ function doRepeatIfPossible(){
 
 	doSave();
 
-	exec(commandLine, (err:any, stdout:any, stderr:any) => {
+	exec(commandLine, (err:any) => {
 		if(err){
 			console.log(err);
 		}
@@ -657,7 +657,7 @@ function walkTaskMain(walkDay: Number){
 
 	doSave();
 
-	exec(commandLine, (err:any, stdout:any, stderr:any) => {
+	exec(commandLine, (err:any) => {
 		if(err){
 			console.log(err);
 		}
@@ -671,7 +671,7 @@ function walkTask1Day(){
 
 	doSave();
 
-	exec(commandLine, (err:any, stdout:any, stderr:any) => {
+	exec(commandLine, (err:any) => {
 		if(err){
 			console.log(err);
 		}
@@ -685,7 +685,7 @@ function walkTaskToToday(){
 
 	doSave();
 
-	exec(commandLine, (err:any, stdout:any, stderr:any) => {
+	exec(commandLine, (err:any) => {
 		if(err){
 			console.log(err);
 		}
@@ -698,7 +698,7 @@ function completeSimply(){
 
 	doSave();
 
-	exec(commandLine, (err:any, stdout:any, stderr:any) => {
+	exec(commandLine, (err:any) => {
 		if(err){
 			console.log(err);
 		}
@@ -714,7 +714,7 @@ function reportDialog(){
 	let commandLine = `${getHelperCommandline()} ${reportArgs}`;
 	console.log(`Reporting: "${commandLine}"`);
 
-	exec(commandLine, (err:any, stdout:any, stderr:any) => {
+	exec(commandLine, (err:any) => {
 		if(err){
 			console.log(err);
 		}
