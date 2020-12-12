@@ -87,7 +87,7 @@ function getHelperYargs(){
 	return yargs;
 }
 class DateTime {
-	private _momentinst: any
+	private _momentinst: moment.Moment
 	private _format: string
 
 	public constructor(){
