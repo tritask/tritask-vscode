@@ -363,7 +363,7 @@ function doSort(){
 
 	doSave();
 
-	exec(commandLine, (err:any) => {
+	exec(commandLine, (err) => {
 		if(err){
 			console.log(err);
 		}
