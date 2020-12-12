@@ -385,7 +385,7 @@ function doRepeatIfPossible(){
 
 	doSave();
 
-	exec(commandLine, (err:any) => {
+	exec(commandLine, (err) => {
 		if(err){
 			console.log(err);
 		}
@@ -661,7 +661,7 @@ function walkTaskMain(walkDay: number){
 
 	doSave();
 
-	exec(commandLine, (err:any) => {
+	exec(commandLine, (err) => {
 		if(err){
 			console.log(err);
 		}
@@ -675,7 +675,7 @@ function walkTask1Day(){
 
 	doSave();
 
-	exec(commandLine, (err:any) => {
+	exec(commandLine, (err) => {
 		if(err){
 			console.log(err);
 		}
@@ -689,7 +689,7 @@ function walkTaskToToday(){
 
 	doSave();
 
-	exec(commandLine, (err:any) => {
+	exec(commandLine, (err) => {
 		if(err){
 			console.log(err);
 		}
@@ -702,7 +702,7 @@ function completeSimply(){
 
 	doSave();
 
-	exec(commandLine, (err:any) => {
+	exec(commandLine, (err) => {
 		if(err){
 			console.log(err);
 		}
@@ -718,7 +718,7 @@ function reportDialog(){
 	const commandLine = `${getHelperCommandline()} ${reportArgs}`;
 	console.log(`Reporting: "${commandLine}"`);
 
-	exec(commandLine, (err:any) => {
+	exec(commandLine, (err) => {
 		if(err){
 			console.log(err);
 		}
