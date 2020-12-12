@@ -809,5 +809,3 @@ export function activate(context: vscode.ExtensionContext) {
 		report_dialog
 	);
 }
-
-export function deactivate() {}
