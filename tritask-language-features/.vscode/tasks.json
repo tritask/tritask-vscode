@@ -4,7 +4,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "debug run",
+			"label": "Debug Run",
 			"type": "npm",
 			"script": "watch",
 			"problemMatcher": "$tsc-watch",
@@ -18,14 +18,17 @@
 			}
 		},
 		{
-			"label": "lint",
+			"label": "Lint",
 			"type": "npm",
 			"script": "lint",
 			"isBackground": true,
 		},
 		{
-			"label": "lint and build",
-			"dependsOn": ["lint", "debug run"]
+			// Lint してから Debug Run したいんだけど
+			// launch の preLaunchTask から呼んでも上手く動いてくれない.
+			// (Lint で止まったり watch が残ったままになったりする……)
+			"label": "LintBuild",
+			"dependsOn": ["Lint", "Debug Run"]
 		},
 	]
 }
