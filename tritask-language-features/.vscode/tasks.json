@@ -4,6 +4,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "debug run",
 			"type": "npm",
 			"script": "watch",
 			"problemMatcher": "$tsc-watch",
@@ -17,8 +18,14 @@
 			}
 		},
 		{
+			"label": "lint",
 			"type": "npm",
-			"script": "lint"
-		}
+			"script": "lint",
+			"isBackground": true,
+		},
+		{
+			"label": "lint and build",
+			"dependsOn": ["lint", "debug run"]
+		},
 	]
 }
