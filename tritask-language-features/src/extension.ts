@@ -723,8 +723,8 @@ function reportDialog(){
 	});
 }
 
-export function activate(context: vscode.ExtensionContext) {
-
+export function activate(context: vscode.ExtensionContext):void {
+	/* eslint-disable-next-line @typescript-eslint/no-empty-function */
 	const dummy_for_menu_separator = vscode.commands.registerCommand('tritask.dummy', () => {});
 
 	const menu_show = vscode.commands.registerCommand('tritask.menu.show', () => {
