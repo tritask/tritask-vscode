@@ -260,6 +260,8 @@ const EMPTYFULLDATE = " ".repeat(LEN_FULLDATE);
 // M 2017/07/13 Thu             TOMORROW
 const POS_STARTTIME = 17;
 const POS_ENDTIME = 23;
+const POS_DATE = 2;
+const POS_DESCRIPTION = 29;
 
 function showMenu(){
 	vscode.commands.executeCommand("editor.action.showContextMenu");
@@ -509,14 +511,44 @@ function jumpToStartingTask(){
 function jumpToTodayTodo(){
 	let editor = getEditor();
 	let doc = editor.document;
+	let lineCount = doc.lineCount;
 
-	// 以下の行を列挙
-	// - datetime が今日 && starttime がない && endtime がない
-	// うち, もっとも行番号が浅いものが today todo の先頭
+	// today todo は, datetime が今日 && starttime がない && endtime がないもの
 
-	// skeleton
-	let startPos = new vscode.Position(0, 1);
-	let endPos = startPos.with(0, 10)
+	let foundLineNumber = -1;
+	for(let curLineNumber=0; curLineNumber<lineCount; curLineNumber++){
+		let line = doc.lineAt(curLineNumber).text;
+
+		if(line.length < LEN_BEFORE_DESCRIPTION){
+			continue;
+		}
+
+		let startTimePart = line.substr(POS_STARTTIME, LEN_TIME);
+		let endTimePart = line.substr(POS_ENDTIME, LEN_TIME);
+		if(startTimePart != EMPTYTIME){
+			continue;
+		}
+		if(endTimePart != EMPTYTIME){
+			continue;
+		}
+
+		let datePart = line.substr(POS_DATE, LEN_DATE);
+		let todayString = DateTimeUtil.todayString();
+		const isNotTodayLine = datePart != todayString
+		if(isNotTodayLine){
+			continue;
+		}
+
+		// 最初に見つかった行 = 先頭行なのでこれで確定して良い.
+		foundLineNumber = curLineNumber;
+		break;
+	}
+	if(foundLineNumber == -1){
+		return;
+	}
+
+	let startPos = new vscode.Position(foundLineNumber, POS_DESCRIPTION);
+	let endPos = startPos.with(startPos.line, startPos.character)
 	let sel = new vscode.Selection(startPos, endPos);
 	editor.selection = sel;
 
