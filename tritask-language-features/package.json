@@ -299,8 +299,8 @@
 			},
 			{
 				"command": "tritask.jump.today.todo",
-				"key": "alt+shift+z",
-				"mac": "ctrl+shift+z",
+				"key": "alt+k",
+				"mac": "ctrl+k",
 				"when": "resourceExtname == .trita"
 			},
 			{
