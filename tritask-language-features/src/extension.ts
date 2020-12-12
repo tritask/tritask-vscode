@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
 
 import * as moment from 'moment'
-const exec = require('child_process').exec;
+import * as child_process from 'child_process'
+const exec = child_process.exec;
+
 moment.locale("ja");
 
 const SELF_EXTENSION_ID = "stakiran.tritask-language-features";
