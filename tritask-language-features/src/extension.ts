@@ -294,7 +294,9 @@ function addInbox(){
 	CursorMover.golinetop().left();
 }
 
-function copyTask(cursorMoverAfterCopy: any){
+// コールバック関数使う以外の上手い設計思いつかないので disable にする.
+// (ちなみに any から Function にしても Don't use Function as a type. The Function type accepts any function-like value.)
+function copyTask(cursorMoverAfterCopy: any){ // eslint-disable-line  @typescript-eslint/no-explicit-any
 	const editor = getEditor();
 	const doc = editor.document;
 	const currentLine = doc.lineAt(CursorPositioner.current()).text;
