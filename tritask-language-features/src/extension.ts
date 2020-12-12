@@ -506,6 +506,24 @@ function jumpToStartingTask(){
 	editor.revealRange(range, vscode.TextEditorRevealType.Default);
 }
 
+function jumpToTodayTodo(){
+	let editor = getEditor();
+	let doc = editor.document;
+
+	// 以下の行を列挙
+	// - datetime が今日 && starttime がない && endtime がない
+	// うち, もっとも行番号が浅いものが today todo の先頭
+
+	// skeleton
+	let startPos = new vscode.Position(0, 1);
+	let endPos = startPos.with(0, 10)
+	let sel = new vscode.Selection(startPos, endPos);
+	editor.selection = sel;
+
+	let range = new vscode.Range(startPos, endPos);
+	editor.revealRange(range, vscode.TextEditorRevealType.Default);
+}
+
 function jumpToNextSeparator(){
 	jumpToSeparator("down");
 }
@@ -698,6 +716,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let jump_to_starting = vscode.commands.registerCommand('tritask.jump.starting', () => {
 		jumpToStartingTask();
+	});
+
+	let jump_to_today_todo = vscode.commands.registerCommand('tritask.jump.today.todo', () => {
+		jumpToTodayTodo();
 	});
 
 	let jump_to_next_separator = vscode.commands.registerCommand('tritask.jump.separator.next', () => {

@@ -25,6 +25,7 @@
 		"onCommand:tritask.task.walk.today",
 		"onCommand:tritask.sort",
 		"onCommand:tritask.menu.show",
+		"onCommand:tritask.jump.today.todo",
 		"onCommand:tritask.jump.starting",
 		"onCommand:tritask.jump.separator.prev",
 		"onCommand:tritask.jump.separator.next",
@@ -86,6 +87,11 @@
 			{
 				"command": "tritask.menu.show",
 				"title": "Show menu",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.jump.today.todo",
+				"title": "Jump to the top of today todo",
 				"category": "Tritask"
 			},
 			{
@@ -158,6 +164,10 @@
 				},
 				{
 					"command": "tritask.menu.show",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.jump.today.todo",
 					"when": "resourceExtname == .trita"
 				},
 				{
@@ -243,6 +253,11 @@
 					"when": "resourceExtname == .trita"
 				},
 				{
+					"command": "tritask.jump.today.todo",
+					"group": "navigation@22",
+					"when": "resourceExtname == .trita"
+				},
+				{
 					"command": "tritask.jump.starting",
 					"group": "navigation@22",
 					"when": "resourceExtname == .trita"
@@ -280,6 +295,12 @@
 				"command": "tritask.sort",
 				"key": "alt+z",
 				"mac": "ctrl+z",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.jump.today.todo",
+				"key": "alt+shift+z",
+				"mac": "ctrl+shift+z",
 				"when": "resourceExtname == .trita"
 			},
 			{
