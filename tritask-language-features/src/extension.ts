@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-const moment = require('moment');
+import * as moment from 'moment'
 const exec = require('child_process').exec;
 moment.locale("ja");
 
