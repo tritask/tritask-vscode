@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { before, after } from 'mocha';
+import { before, beforeEach, after } from 'mocha';
 
 import * as vscode from 'vscode';
 
@@ -47,10 +47,27 @@ suite('describe1', () => {
 		)
 	});
 
+	beforeEach(() => {
+		const editor = getEditor();
+		const doc = editor.document
+		const lineCount = doc.lineCount
+		const overEof = lineCount + 1
+
+		const fofPos = new vscode.Position(0, 0)
+		const eofPos = new vscode.Position(overEof, 0)
+		const allRange = new vscode.Range(fofPos, eofPos);
+
+		const clear = function(editBuilder: vscode.TextEditorEdit): void{
+			const empty = ""
+			editBuilder.replace(allRange, empty);
+		}
+		return editor.edit(clear)
+	});
+
 	after(() => {
 	});
 
-	test('add task', async () => {
+	test('add task.', async () => {
 		let isSuccess = false
 		isSuccess = await addTask()
 		isSuccess = isSuccess && await addTask()
@@ -62,7 +79,16 @@ suite('describe1', () => {
 		assert.strictEqual(lineCount, 4)
 	});
 
-	test('peek current document', (done) => {
+	test('add task(for testing clear text on beforeEach).', async () => {
+		const isSuccess = await addTask()
+
+		const editor = getEditor()
+		const lineCount = editor.document.lineCount
+		assert.strictEqual(isSuccess, true)
+		assert.strictEqual(lineCount, 2)
+	});
+
+	test('peek current document', async (done) => {
 		const editor = getEditor()
 		console.log(editor.document)
 		done()
