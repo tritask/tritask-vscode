@@ -1,18 +1,40 @@
 import * as assert from 'assert';
-import { before } from 'mocha';
+import { before, after, beforeEach, afterEach } from 'mocha';
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
+
 // import * as myExtension from '../extension';
 
-suite('Extension Test Suite', () => {
+suite('describe1', () => {
 	before(() => {
 		vscode.window.showInformationMessage('Start all tests.');
+		console.log('before')
 	});
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
+	after(() => {
+		console.log('after')
+	});
+
+	beforeEach(() => {
+		console.log('before')
+	});
+
+	afterEach(() => {
+		console.log('after')
+	});
+
+	test('test1', () => {
+		assert.strictEqual(1, 100-98-1);
+	});
+
+	test('test2', () => {
+		assert.strictEqual(2, 100-98);
+	});
+
+});
+
+suite('describe2', () => {
+	test('test3', () => {
+		assert.strictEqual(1, 100-98-1);
 	});
 });
