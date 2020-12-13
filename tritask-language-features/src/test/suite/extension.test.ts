@@ -29,13 +29,18 @@ class IDE {
 //   - suite は describe, test は it の糖衣構文(たぶん)
 //   - わかりやすいネーミングだと思うので採用
 // - before や test の中では promise object を返す.
-//   - これにより, (当該の処理が終わるまで)次の test に行くのを待たせることができる
+//   - これにより, (当該非同期処理が終わるまで)次の test に行くのを待たせることができる
 //   - (mocha 側が await 的なのを頑張ってくれてる)
 // - 必要なデータは TestData でやりとりする.
 //   - 前の test で return した promise object を, 次の test は受け取れないため.
-// - テストコードの(非同期処理の)終わりでは done() する
+// - テストコードの終わりでは done() する
 //   - これしないと Error: Timeout of 2000ms exceeded. になる
-//   - done とは test(), もっというと it() に渡されてくる「非同期処理終わったならこれ呼んでね」関数
+//   - mocha 曰く
+//     - 非同期処理がいつ終わるかわからん
+//     - デフォではタイムアウト 2000ms にしてます( Error: Timeout of 2000ms exceeded. を出します
+//     - いつ終わるかわからんけど、いつか終わる ← これできないと困るでしょ？
+//       - だったら done() を使ってね
+//       - done は test(), もっというと it() に渡しますんで
 
 class TestData {
 	static document: vscode.TextDocument;
