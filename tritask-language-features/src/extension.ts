@@ -504,13 +504,12 @@ function jumpToStartingTask(){
 		if(line.length < LEN_BEFORE_DESCRIPTION){
 			continue;
 		}
-		const startTimePart = line.substr(POS_STARTTIME, LEN_TIME);
-		const endTimePart = line.substr(POS_ENDTIME, LEN_TIME);
-		if(startTimePart == EMPTYTIME){
-			continue;
+		if(LineTester.isNotStarted(line)){
+			continue
 		}
-		if(endTimePart != EMPTYTIME){
-			continue;
+		const alreadyEnded = !(LineTester.isNotEnded(line))
+		if(alreadyEnded){
+			continue
 		}
 		foundLineNumber = curLineNumber;
 		break;
@@ -539,15 +538,12 @@ function jumpToTodayTodo(){
 	let foundLineNumber = -1;
 	for(let curLineNumber=0; curLineNumber<lineCount; curLineNumber++){
 		const line = doc.lineAt(curLineNumber).text;
-
 		if(line.length < LEN_BEFORE_DESCRIPTION){
 			continue;
 		}
-
 		if(LineTester.isNotToday(line)){
 			continue;
 		}
-
 		const alreadyStarted = !(LineTester.isNotStarted(line))
 		const alreadyEnded = !(LineTester.isNotEnded(line))
 		if(alreadyStarted){
@@ -556,7 +552,6 @@ function jumpToTodayTodo(){
 		if(alreadyEnded){
 			continue
 		}
-
 		// 最初に見つかった行 = 先頭行なのでこれで確定して良い.
 		foundLineNumber = curLineNumber;
 		break;
