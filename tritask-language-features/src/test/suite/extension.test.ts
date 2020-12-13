@@ -25,7 +25,7 @@ class IDE {
 }
 
 suite('describe1', () => {
-	before(async () => {
+	before(() => {
 		const promise = IDE.openTesteeFile()
 		return promise.then(
 			(doc: vscode.TextDocument) => {
