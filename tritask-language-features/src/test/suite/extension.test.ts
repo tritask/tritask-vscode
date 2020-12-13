@@ -50,16 +50,16 @@ suite('describe1', () => {
 	after(() => {
 	});
 
-	test('add task', () => {
-		const promise = addTask()
-		return promise.then(
-			(isSuccess) => {
-				const editor = getEditor()
-				const lineCount = editor.document.lineCount
-				assert.strictEqual(isSuccess, true)
-				assert.strictEqual(lineCount, 2)
-			}
-		)
+	test('add task', async () => {
+		let isSuccess = false
+		isSuccess = await addTask()
+		isSuccess = isSuccess && await addTask()
+		isSuccess = isSuccess && await addTask()
+
+		const editor = getEditor()
+		const lineCount = editor.document.lineCount
+		assert.strictEqual(isSuccess, true)
+		assert.strictEqual(lineCount, 4)
 	});
 
 	test('peek current document', (done) => {
