@@ -15,7 +15,7 @@ function abort(message: string){
 	//throw new Error(`Error: ${message}`);
 }
 
-function getSelfDirectory(){
+export function getSelfDirectory(){
 	const selfExtension = vscode.extensions.getExtension(SELF_EXTENSION_ID);
 	if(selfExtension === undefined){
 		abort("No extension found in getSelfDirectory()");
@@ -813,8 +813,4 @@ export function activate(context: vscode.ExtensionContext):void {
 		report_dialog
 	);
 }
-
- export {
-	 getSelfDirectory
- }
  

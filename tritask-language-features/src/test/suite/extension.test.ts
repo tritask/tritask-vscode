@@ -14,14 +14,6 @@ class IDE {
 		const TESTEE_FULLLPATH = path.resolve(TESTEE_DIRECTORY, TESTEE_FILENAME)
 		return vscode.workspace.openTextDocument(TESTEE_FULLLPATH)
 	}
-
-	static getEditor(){
-		const editor = vscode.window.activeTextEditor;
-		if(editor == null){
-			throw new Error("activeTextEditor is null currently.");
-		}
-		return editor;
-	}
 }
 
 // ここで採用している mocha + 非同期テストの書き方.
