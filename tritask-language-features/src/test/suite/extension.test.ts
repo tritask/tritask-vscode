@@ -7,6 +7,7 @@ import * as path from 'path'
 
 import { getSelfDirectory, getEditor } from '../../extension';
 import { addTask, startTask, endTask } from '../../extension';
+import { LineTester } from '../../extension';
 
 // ここで採用している mocha + 非同期テストの書き方.
 // - suite と test を使う.
@@ -91,10 +92,11 @@ suite('describe1', () => {
 		const editor = getEditor()
 		const doc = editor.document
 		const lineCount = doc.lineCount
-		const line = doc.lineAt(0)
+		const text = doc.lineAt(0).text
+		const isTodayLine = !(LineTester.isNotToday(text))
 
 		assert.strictEqual(lineCount, 2)
-		console.log(line)
+		assert.strictEqual(isTodayLine, true)
 	});
 
 	test('peek current document', async (done) => {

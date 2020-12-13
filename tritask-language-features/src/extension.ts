@@ -265,7 +265,7 @@ const POS_ENDTIME = 23;
 const POS_DATE = 2;
 const POS_DESCRIPTION = 29;
 
-class LineTester {
+export class LineTester {
 	static isNotToday(line: string){
 		const datePart = line.substr(POS_DATE, LEN_DATE);
 		const todayString = DateTimeUtil.todayString();
