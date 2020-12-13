@@ -543,10 +543,7 @@ function jumpToTodayTodo(){
 			continue;
 		}
 
-		const datePart = line.substr(POS_DATE, LEN_DATE);
-		const todayString = DateTimeUtil.todayString();
-		const isNotTodayLine = datePart != todayString
-		if(isNotTodayLine){
+		if(LineTester.isNotToday(line)){
 			continue;
 		}
 
