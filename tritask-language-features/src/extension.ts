@@ -272,6 +272,16 @@ export class LineTester {
 		const isNotTodayLine = datePart != todayString
 		return isNotTodayLine
 	}
+
+	static isNotStarted(line: string){
+		const startTimePart = line.substr(POS_STARTTIME, LEN_TIME);
+		return startTimePart == EMPTYTIME
+	}
+
+	static isNotEnded(line: string){
+		const endTimePart = line.substr(POS_ENDTIME, LEN_TIME);
+		return endTimePart == EMPTYTIME
+	}
 }
 
 function showMenu(){
@@ -534,17 +544,17 @@ function jumpToTodayTodo(){
 			continue;
 		}
 
-		const startTimePart = line.substr(POS_STARTTIME, LEN_TIME);
-		const endTimePart = line.substr(POS_ENDTIME, LEN_TIME);
-		if(startTimePart != EMPTYTIME){
-			continue;
-		}
-		if(endTimePart != EMPTYTIME){
+		if(LineTester.isNotToday(line)){
 			continue;
 		}
 
-		if(LineTester.isNotToday(line)){
-			continue;
+		const alreadyStarted = !(LineTester.isNotStarted(line))
+		const alreadyEnded = !(LineTester.isNotEnded(line))
+		if(alreadyStarted){
+			continue
+		}
+		if(alreadyEnded){
+			continue
 		}
 
 		// 最初に見つかった行 = 先頭行なのでこれで確定して良い.
