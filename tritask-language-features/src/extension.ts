@@ -813,3 +813,8 @@ export function activate(context: vscode.ExtensionContext):void {
 		report_dialog
 	);
 }
+
+ export {
+	 getSelfDirectory
+ }
+ 
