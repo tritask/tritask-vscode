@@ -30,6 +30,10 @@ suite('describe1', () => {
 		promise.then(
 			(doc: vscode.TextDocument) => {
 				console.log(doc)
+			},
+			(err) => {
+				console.log(err)
+				assert.fail('テスト用ファイルをopenできませんでした.')
 			}
 		)
 	});
