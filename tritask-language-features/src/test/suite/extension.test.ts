@@ -5,9 +5,18 @@ import * as vscode from 'vscode';
 
 // import * as myExtension from '../extension';
 
+class IDE {
+	static showInfo(msg: string){
+		vscode.window.showInformationMessage(msg);
+	}
+
+	static openFile(){
+	}
+}
+
 suite('describe1', () => {
 	before(() => {
-		vscode.window.showInformationMessage('Start all tests.');
+		IDE.showInfo('Run all tests.')
 		console.log('before')
 	});
 
@@ -33,8 +42,3 @@ suite('describe1', () => {
 
 });
 
-suite('describe2', () => {
-	test('test3', () => {
-		assert.strictEqual(1, 100-98-1);
-	});
-});
