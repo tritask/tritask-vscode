@@ -34,6 +34,10 @@ class IDE {
 	}
 }
 
+function isTrue(b: boolean){
+	return assert.strictEqual(b, true)
+}
+
 suite('describe1', () => {
 	before(() => {
 		const promise = IDE.openTesteeFile()
@@ -76,7 +80,7 @@ suite('describe1', () => {
 
 		const editor = getEditor()
 		const lineCount = editor.document.lineCount
-		assert.strictEqual(isSuccess, true)
+		isTrue(isSuccess)
 		assert.strictEqual(lineCount, 4)
 	});
 
@@ -84,10 +88,10 @@ suite('describe1', () => {
 		let isSuccess = false
 
 		isSuccess = await addTask()
-		assert.strictEqual(isSuccess, true)
+		isTrue(isSuccess)
 
 		isSuccess = await startTask()
-		assert.strictEqual(isSuccess, true)
+		isTrue(isSuccess)
 
 		const editor = getEditor()
 		const doc = editor.document
@@ -97,9 +101,9 @@ suite('describe1', () => {
 		const alreadyStarted = !(LineTester.isNotStarted(text))
 
 		assert.strictEqual(lineCount, 2)
-		assert.strictEqual(isTodayLine, true)
-		assert.strictEqual(alreadyStarted, true)
-		assert.strictEqual(LineTester.isNotEnded(text), true)
+		isTrue(isTodayLine)
+		isTrue(alreadyStarted)
+		isTrue(LineTester.isNotEnded(text))
 	});
 
 	test('peek current document', async (done) => {
