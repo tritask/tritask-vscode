@@ -265,6 +265,15 @@ const POS_ENDTIME = 23;
 const POS_DATE = 2;
 const POS_DESCRIPTION = 29;
 
+class LineTester {
+	static isNotToday(line: string){
+		const datePart = line.substr(POS_DATE, LEN_DATE);
+		const todayString = DateTimeUtil.todayString();
+		const isNotTodayLine = datePart != todayString
+		return isNotTodayLine
+	}
+}
+
 function showMenu(){
 	vscode.commands.executeCommand("editor.action.showContextMenu");
 }
@@ -391,7 +400,7 @@ function doRepeatIfPossible(){
 	});
 }
 
-function startTask(){
+export function startTask(){
 	// s  e  >DStart>  s  e
 	// ---------------------
 	// x  x            o  x    OK. 普通に start する.
@@ -416,13 +425,12 @@ function startTask(){
 
 	const f = function(editBuilder: vscode.TextEditorEdit): void{
 		editBuilder.replace(startTimeRange, afterString);
+		CursorMover.endofstarttime();
 	}
-	editor.edit(f);
-
-	CursorMover.endofstarttime();
+	return editor.edit(f);
 }
 
-function endTask(){
+export function endTask(){
 	// s  e  >DoEnd>  s  e
 	// -------------------
 	// x  x           x  x    Invalid. start してないので end しない.

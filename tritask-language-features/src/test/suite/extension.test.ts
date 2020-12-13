@@ -6,16 +6,7 @@ import * as vscode from 'vscode';
 import * as path from 'path'
 
 import { getSelfDirectory, getEditor } from '../../extension';
-import { addTask } from '../../extension';
-
-class IDE {
-	static openTesteeFile(){
-		const TESTEE_FILENAME = 'test.trita'
-		const TESTEE_DIRECTORY = path.resolve(getSelfDirectory(), 'src', 'test', 'suite')
-		const TESTEE_FULLLPATH = path.resolve(TESTEE_DIRECTORY, TESTEE_FILENAME)
-		return vscode.workspace.openTextDocument(TESTEE_FULLLPATH)
-	}
-}
+import { addTask, startTask, endTask } from '../../extension';
 
 // ここで採用している mocha + 非同期テストの書き方.
 // - suite と test を使う.
@@ -32,6 +23,15 @@ class IDE {
 //     - いつ終わるかわからんけど、いつか終わる ← これできないと困るでしょ？
 //       - だったら done() を使ってね
 //       - done は test(), もっというと it() に渡しますんで
+
+class IDE {
+	static openTesteeFile(){
+		const TESTEE_FILENAME = 'test.trita'
+		const TESTEE_DIRECTORY = path.resolve(getSelfDirectory(), 'src', 'test', 'suite')
+		const TESTEE_FULLLPATH = path.resolve(TESTEE_DIRECTORY, TESTEE_FILENAME)
+		return vscode.workspace.openTextDocument(TESTEE_FULLLPATH)
+	}
+}
 
 suite('describe1', () => {
 	before(() => {
@@ -79,13 +79,22 @@ suite('describe1', () => {
 		assert.strictEqual(lineCount, 4)
 	});
 
-	test('add task(for testing clear text on beforeEach).', async () => {
-		const isSuccess = await addTask()
+	test('start, end and copy task', async () => {
+		let isSuccess = false
+
+		isSuccess = await addTask()
+		assert.strictEqual(isSuccess, true)
+
+		isSuccess = await startTask()
+		assert.strictEqual(isSuccess, true)
 
 		const editor = getEditor()
-		const lineCount = editor.document.lineCount
-		assert.strictEqual(isSuccess, true)
+		const doc = editor.document
+		const lineCount = doc.lineCount
+		const line = doc.lineAt(0)
+
 		assert.strictEqual(lineCount, 2)
+		console.log(line)
 	});
 
 	test('peek current document', async (done) => {
