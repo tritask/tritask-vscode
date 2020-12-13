@@ -6,6 +6,7 @@ import * as vscode from 'vscode';
 import * as path from 'path'
 
 import { getSelfDirectory } from '../../extension';
+import { addTask } from '../../extension';
 
 class IDE {
 	static openTesteeFile(){
@@ -55,14 +56,19 @@ suite('describe1', () => {
 	after(() => {
 	});
 
-	test('test1', () => {
-		assert.strictEqual(1, 100-98-1);
-		console.log(TestData.document)
+	test('add task', () => {
+		const promise = addTask()
+		return promise.then(
+			() => {
+				const lineCount = TestData.document.lineCount
+				assert.strictEqual(lineCount, 2)
+			}
+		)
 	});
 
 	test('test2', (done) => {
 		assert.strictEqual(1, 100-98-1);
-		console.log(TestData.document.fileName)
+		console.log(TestData.document)
 		done()
 	});
 

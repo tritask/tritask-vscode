@@ -269,17 +269,16 @@ function showMenu(){
 	vscode.commands.executeCommand("editor.action.showContextMenu");
 }
 
-function addTask(){
+export function addTask(){
 	const editor = getEditor();
 	const todayString = DateTimeUtil.todayString();
 	const inserteeString = `${EMPTYSORTMARK} ${todayString} ${EMPTYDOW} ${EMPTYTIME} ${EMPTYTIME} \n`;
 	const inserteePos = CursorPositioner.linetop();
 	const f = function(editBuilder: vscode.TextEditorEdit): void{
 		editBuilder.insert(inserteePos, inserteeString);
+		CursorMover.golinetop().left();
 	}
-	editor.edit(f);
-
-	CursorMover.golinetop().left();
+	return editor.edit(f);
 }
 
 function addInbox(){
