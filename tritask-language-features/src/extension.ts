@@ -43,7 +43,7 @@ function input(message: string): Thenable<string|undefined>{
 	return vscode.window.showInputBox(options);
 }
 
-function getEditor(){
+export function getEditor(){
 	const editor = vscode.window.activeTextEditor;
 	if(editor == null){
 		abort("activeTextEditor is null currently.")
