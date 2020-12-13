@@ -94,9 +94,12 @@ suite('describe1', () => {
 		const lineCount = doc.lineCount
 		const text = doc.lineAt(0).text
 		const isTodayLine = !(LineTester.isNotToday(text))
+		const alreadyStarted = !(LineTester.isNotStarted(text))
 
 		assert.strictEqual(lineCount, 2)
 		assert.strictEqual(isTodayLine, true)
+		assert.strictEqual(alreadyStarted, true)
+		assert.strictEqual(LineTester.isNotEnded(text), true)
 	});
 
 	test('peek current document', async (done) => {
