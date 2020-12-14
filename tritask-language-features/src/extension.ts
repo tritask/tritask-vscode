@@ -134,6 +134,20 @@ class CursorPositioner {
 		return curPos.with(newY, newX);
 	}
 
+	static lineend(): vscode.Position {
+		const editor = getEditor();
+		const curPos = editor.selection.active;
+
+		const doc = editor.document
+		const currentLine = doc.lineAt(curPos).text;
+		const currentLineLength = currentLine.length
+
+		const newY = curPos.line;
+		const newX = currentLineLength
+
+		return curPos.with(newY, newX);
+	}
+
 	static startOfTimeFields(): vscode.Position {
 		const editor = getEditor();
 		const curPos = editor.selection.active;
@@ -200,9 +214,15 @@ class CursorPositioner {
 
 }
 
+// vscode.Selection で同期的に実装する.
+// vscode.commands.executeCommand("cursorLineEnd") などは Thenable<unknown> で書きづらいため, 使わない.
 class CursorMover {
 	static golinetop() {
-		vscode.commands.executeCommand("cursorLineStart");
+		const pos = CursorPositioner.linetop();
+		const sel = new vscode.Selection(pos, pos);
+
+		const editor = getEditor();
+		editor.selection = sel;
 		return this;
 	}
 
