@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import * as moment from 'moment'
 import * as child_process from 'child_process'
+import { isContext } from 'vm';
 const exec = child_process.exec;
 
 moment.locale("ja");
@@ -162,6 +163,16 @@ class CursorPositioner {
 		return CursorPositioner.startOfTimeFields();
 	}
 
+	static startOfDescriptionOfPrevLine(): vscode.Position {
+		const editor = getEditor();
+		const curPos = editor.selection.active;
+
+		const newY = curPos.line - 1;
+		const newX = POS_DESCRIPTION;
+
+		return curPos.with(newY, newX);
+	}
+
 	static endOfTimeFields(): vscode.Position {
 		const editor = getEditor();
 		const curPos = editor.selection.active;
@@ -235,8 +246,12 @@ class CursorMover {
 		return this;
 	}
 
-	static left() {
-		vscode.commands.executeCommand("cursorLeft");
+	static startofdescriptionofprevline() {
+		const pos = CursorPositioner.startOfDescriptionOfPrevLine();
+		const sel = new vscode.Selection(pos, pos);
+
+		const editor = getEditor();
+		editor.selection = sel;
 		return this;
 	}
 
@@ -307,16 +322,20 @@ function showMenu(){
 	vscode.commands.executeCommand("editor.action.showContextMenu");
 }
 
-export function addTask(){
+export async function addTask(){
 	const editor = getEditor();
 	const todayString = DateTimeUtil.todayString();
 	const inserteeString = `${EMPTYSORTMARK} ${todayString} ${EMPTYDOW} ${EMPTYTIME} ${EMPTYTIME} \n`;
 	const inserteePos = CursorPositioner.linetop();
 	const f = function(editBuilder: vscode.TextEditorEdit): void{
 		editBuilder.insert(inserteePos, inserteeString);
-		CursorMover.golinetop().left();
 	}
-	return editor.edit(f);
+	return editor.edit(f).then(
+		(isSuccess) => {
+			CursorMover.startofdescriptionofprevline();
+			return true
+		}
+	)
 }
 
 function addInbox(){
@@ -328,7 +347,7 @@ function addInbox(){
 	}
 	editor.edit(f);
 
-	CursorMover.golinetop().left();
+	CursorMover.golinetop().startofdescriptionofprevline();
 }
 
 // コールバック関数使う以外の上手い設計思いつかないので disable にする.
