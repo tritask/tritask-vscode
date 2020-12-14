@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 
 import * as moment from 'moment'
 import * as child_process from 'child_process'
-import { isContext } from 'vm';
 const exec = child_process.exec;
 
 moment.locale("ja");
