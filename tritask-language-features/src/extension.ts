@@ -352,12 +352,7 @@ export async function _addLine(inserteeString: string){
 	)
 }
 
-// @param cursorMoverAfterCopy copy task 実行後に実行するカーソル操作関数
-//
-// Q:なんで eslint disable line している?
-//   - コールバック関数を使う以外の上手い設計がパッと浮かばないので...
-//   - (ちなみに any から Function にしても Don't use Function as a type エラー.)
-export async function copyTask(cursorMoverAfterCopy: any){ // eslint-disable-line  @typescript-eslint/no-explicit-any
+export async function copyTask(){
 	const editor = getEditor();
 	const doc = editor.document;
 	const currentLine = doc.lineAt(CursorPositioner.current()).text;
@@ -392,12 +387,8 @@ export async function copyTask(cursorMoverAfterCopy: any){ // eslint-disable-lin
 			if(isNotSucceedEdit){
 				return false
 			}
-			const isNotGivenCallbackAfterEditting = cursorMoverAfterCopy === undefined
-			if(isNotGivenCallbackAfterEditting){
-				return false
-			}
-			cursorMoverAfterCopy();
-			return true
+			CursorMover.golineend();
+			return true;
 		}
 	)
 }
@@ -518,18 +509,26 @@ export function endTask(){
 	const endTimeBuilder = function(editBuilder: vscode.TextEditorEdit): void{
 		editBuilder.replace(endTimeRange, afterStringForEndTime);
 	}	
-	const endTimePromise = editor.edit(endTimeBuilder);
 
-	const functionAfterCopy = () => {
-		CursorMover.golineend();
-		doRepeatIfPossible();
-	}
-
-	endTimePromise.then(
+	return editor.edit(endTimeBuilder).then(
 		(isSucceedEdit) => {
-			if(isSucceedEdit && isDoneNewly && shouldCopyBecauseRepeat){
-				copyTask(functionAfterCopy);
+			const isNotSucceedEdit = !isSucceedEdit
+			if(isNotSucceedEdit){
+				return false;
 			}
+			const isNotDoneNewly = !isDoneNewly
+			if(isNotDoneNewly){
+				return false;
+			}
+			const notNeedRepeating = !shouldCopyBecauseRepeat
+			if(notNeedRepeating){
+				return false
+			}
+			return copyTask();
+		}
+	).then(
+		() => {
+			return doRepeatIfPossible()
 		}
 	)
 }
@@ -796,8 +795,7 @@ export function activate(context: vscode.ExtensionContext):void {
 	});
 
 	const task_copy = vscode.commands.registerCommand('tritask.task.copy', () => {
-		const callbackAfterCopy = CursorMover.golineend;
-		copyTask(callbackAfterCopy);
+		copyTask();
 	});
 
 	const sort = vscode.commands.registerCommand('tritask.sort', () => {
