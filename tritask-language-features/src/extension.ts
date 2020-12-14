@@ -240,11 +240,6 @@ class CursorMover {
 		return this;
 	}
 
-	static up() {
-		vscode.commands.executeCommand("cursorUp");
-		return this;
-	}
-
 	static endofstarttime() {
 		const pos = CursorPositioner.endOfStartTime();
 		const sel = new vscode.Selection(pos, pos);
