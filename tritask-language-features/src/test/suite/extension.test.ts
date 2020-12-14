@@ -6,7 +6,7 @@ import * as vscode from 'vscode';
 import * as path from 'path'
 
 import { getSelfDirectory, getEditor } from '../../extension';
-import { addTask, startTask, endTask } from '../../extension';
+import { addTask, startTask } from '../../extension';
 import { LineTester } from '../../extension';
 
 // ここで採用している mocha + 非同期テストの書き方.
@@ -67,9 +67,6 @@ suite('describe1', () => {
 			editBuilder.replace(allRange, empty);
 		}
 		return editor.edit(clear)
-	});
-
-	after(() => {
 	});
 
 	test('add task.', async () => {
