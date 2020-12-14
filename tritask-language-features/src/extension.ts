@@ -271,7 +271,6 @@ class CursorMover {
 		editor.selection = sel;
 		return this;
 	}
-
 }
 
 const LEN_DELIM = " ".length;
@@ -323,11 +322,21 @@ function showMenu(){
 
 // 操作系関数の実装方針
 // - VSCode の API が Thenable<boolean> を返す感じなので, これに倣う.
+// - テストコードからアクセスできるよう export する.
 
 export async function addTask(){
-	const editor = getEditor();
 	const todayString = DateTimeUtil.todayString();
 	const inserteeString = `${EMPTYSORTMARK} ${todayString} ${EMPTYDOW} ${EMPTYTIME} ${EMPTYTIME} \n`;
+	return _addLine(inserteeString)
+}
+
+export async function addInbox(){
+	const inserteeString = `${EMPTYSORTMARK} ${EMPTYFULLDATE} ${EMPTYTIME} ${EMPTYTIME} \n`;
+	return _addLine(inserteeString)
+}
+
+export async function _addLine(inserteeString: string){
+	const editor = getEditor();
 	const inserteePos = CursorPositioner.linetop();
 	const f = function(editBuilder: vscode.TextEditorEdit): void{
 		editBuilder.insert(inserteePos, inserteeString);
@@ -335,24 +344,12 @@ export async function addTask(){
 	return editor.edit(f).then(
 		() => {
 			// - 一つ上の行に insert される
-			// - add した task のタスク名を編集したい
+			// - add した task のタスク名(inboxのインボックス名)を編集したい
 			// ので, 一つ上の行の description にカーソルを持っていく.
 			CursorMover.startofdescriptionofprevline();
 			return true
 		}
 	)
-}
-
-function addInbox(){
-	const editor = getEditor();
-	const inserteeString = `${EMPTYSORTMARK} ${EMPTYFULLDATE} ${EMPTYTIME} ${EMPTYTIME} \n`;
-	const inserteePos = CursorPositioner.linetop();
-	const f = function(editBuilder: vscode.TextEditorEdit): void{
-		editBuilder.insert(inserteePos, inserteeString);
-	}
-	editor.edit(f);
-
-	CursorMover.golinetop().startofdescriptionofprevline();
 }
 
 // コールバック関数使う以外の上手い設計思いつかないので disable にする.
