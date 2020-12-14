@@ -227,7 +227,11 @@ class CursorMover {
 	}
 
 	static golineend() {
-		vscode.commands.executeCommand("cursorLineEnd");
+		const pos = CursorPositioner.lineend();
+		const sel = new vscode.Selection(pos, pos);
+
+		const editor = getEditor();
+		editor.selection = sel;
 		return this;
 	}
 
