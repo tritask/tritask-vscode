@@ -322,6 +322,9 @@ function showMenu(){
 	vscode.commands.executeCommand("editor.action.showContextMenu");
 }
 
+// 操作系関数の実装方針
+// - VSCode の API が Thenable<boolean> を返す感じなので, これに倣う.
+
 export async function addTask(){
 	const editor = getEditor();
 	const todayString = DateTimeUtil.todayString();
@@ -331,7 +334,10 @@ export async function addTask(){
 		editBuilder.insert(inserteePos, inserteeString);
 	}
 	return editor.edit(f).then(
-		(isSuccess) => {
+		() => {
+			// - 一つ上の行に insert される
+			// - add した task のタスク名を編集したい
+			// ので, 一つ上の行の description にカーソルを持っていく.
 			CursorMover.startofdescriptionofprevline();
 			return true
 		}
