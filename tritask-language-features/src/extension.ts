@@ -21,6 +21,16 @@ function callbackOnExec(err: child_process.ExecException | null): void{
 	}
 }
 
+async function saveAndExec(commandLine: string){
+	const promise = doSave();
+	return promise.then(
+		() => {
+			exec(commandLine, callbackOnExec)
+			return true
+		}
+	)
+}
+
 export function getSelfDirectory(){
 	const selfExtension = vscode.extensions.getExtension(SELF_EXTENSION_ID);
 	if(selfExtension === undefined){
@@ -426,13 +436,7 @@ async function doSave(){
 export async function doSort(){
 	const commandLine = `${getHelperCommandline()} --sort`;
 	console.log(`Sort: "${commandLine}"`);
-
-	const promise = doSave();
-	return promise.then(
-		() => {
-			exec(commandLine, callbackOnExec)
-		}
-	)
+	return saveAndExec(commandLine)
 }
 
 function doRepeatIfPossible(){
