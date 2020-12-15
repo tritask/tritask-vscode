@@ -15,6 +15,12 @@ function abort(message: string){
 	//throw new Error(`Error: ${message}`);
 }
 
+function callbackOnExec(err: child_process.ExecException | null): void{
+	if(err){
+		console.log(err);
+	}
+}
+
 export function getSelfDirectory(){
 	const selfExtension = vscode.extensions.getExtension(SELF_EXTENSION_ID);
 	if(selfExtension === undefined){
@@ -424,11 +430,7 @@ export async function doSort(){
 	const promise = doSave();
 	return promise.then(
 		() => {
-			exec(commandLine, (err) => {
-				if(err){
-					console.log(err);
-				}
-			});
+			exec(commandLine, callbackOnExec)
 		}
 	)
 }
