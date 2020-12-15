@@ -406,6 +406,5 @@
 	"dependencies": {
 		"child_process": "^1.0.2",
 		"moment": "^2.29.1"
-
 	}
 }
