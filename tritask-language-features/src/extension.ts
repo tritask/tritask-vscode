@@ -1,85 +1,83 @@
 import * as vscode from 'vscode';
 
-import * as moment from 'moment'
-import * as child_process from 'child_process'
+import * as moment from 'moment';
+import * as child_process from 'child_process';
 const exec = child_process.exec;
 
-moment.locale("ja");
+moment.locale('ja');
 
-const SELF_EXTENSION_ID = "stakiran.tritask-language-features";
-const HELPER_FILENAME = "helper.py";
+const SELF_EXTENSION_ID = 'stakiran.tritask-language-features';
+const HELPER_FILENAME = 'helper.py';
 
-function abort(message: string){
+function abort(message: string) {
 	console.log(message);
 	// Object is possibly 'undefined' を防げないので呼び出し元で.
 	//throw new Error(`Error: ${message}`);
 }
 
-function callbackOnExec(err: child_process.ExecException | null): void{
-	if(err){
+function callbackOnExec(err: child_process.ExecException | null): void {
+	if (err) {
 		console.log(err);
 	}
 }
 
-async function saveAndExec(commandLine: string){
+async function saveAndExec(commandLine: string) {
 	const promise = doSave();
-	return promise.then(
-		() => {
-			exec(commandLine, callbackOnExec)
-			return true
-		}
-	)
+	return promise.then(() => {
+		exec(commandLine, callbackOnExec);
+		return true;
+	});
 }
 
-export function getSelfDirectory(){
+export function getSelfDirectory() {
 	const selfExtension = vscode.extensions.getExtension(SELF_EXTENSION_ID);
-	if(selfExtension === undefined){
-		abort("No extension found in getSelfDirectory()");
+	if (selfExtension === undefined) {
+		abort('No extension found in getSelfDirectory()');
 		throw new Error();
 	}
 	const selfDir = selfExtension.extensionPath;
 	return selfDir;
 }
 
-function getHelperFullpath(){
+function getHelperFullpath() {
 	const selfDir = getSelfDirectory();
 	return `${selfDir}/${HELPER_FILENAME}`;
 }
 
-function getFullpathOfActiveTextEditor(){
+function getFullpathOfActiveTextEditor() {
 	const editor = getEditor();
 	const fullpath = editor.document.uri.fsPath;
 	return fullpath;
 }
 
-function input(message: string): Thenable<string|undefined>{
+function input(message: string): Thenable<string | undefined> {
 	const options = {
-		placeHolder: message
+		placeHolder: message,
 	};
 	return vscode.window.showInputBox(options);
 }
 
-export function getEditor(){
+export function getEditor() {
 	const editor = vscode.window.activeTextEditor;
-	if(editor == null){
-		abort("activeTextEditor is null currently.")
+	if (editor == null) {
+		abort('activeTextEditor is null currently.');
 		throw new Error();
 	}
 	return editor;
 }
 
-function isSelected(){
+function isSelected() {
 	const curSel = CursorPositioner.currentSelection();
-	if(curSel.start.line != curSel.end.line){
+	if (curSel.start.line != curSel.end.line) {
 		return true;
 	}
-	if(curSel.start.character != curSel.end.character){
+	if (curSel.start.character != curSel.end.character) {
 		return true;
 	}
 	return false;
 }
 
-function getHelperCommandline(){
+function getHelperCommandline() {
 	const helperFullpath = getHelperFullpath();
 	const tritaFullpath = getFullpathOfActiveTextEditor();
 	// Use not `python` but `python3` because works on MacOS.
@@ -87,31 +85,31 @@ function getHelperCommandline(){
 	return commandLine;
 }
 
-function getHelperYargs(){
+function getHelperYargs() {
 	const curSel = CursorPositioner.currentSelection();
 	const curSelStartLine = curSel.start.line;
 	const curSelEndLine = curSel.end.line;
 
-	let yargs = "";
-	if(curSelStartLine == curSelEndLine){
+	let yargs = '';
+	if (curSelStartLine == curSelEndLine) {
 		const curLineNumber = curSelStartLine;
 		yargs = `-y ${curLineNumber}`;
-	}else{
+	} else {
 		yargs = `-y ${curSelStartLine} --y2 ${curSelEndLine}`;
 	}
 
 	return yargs;
 }
 class DateTime {
-	private _momentinst: moment.Moment
-	private _format: string
+	private _momentinst: moment.Moment;
+	private _format: string;
 
-	public constructor(){
+	public constructor() {
 		this._momentinst = moment();
 		this._format = 'YYYY/MM/DD';
 	}
 
-	public toString(){
+	public toString() {
 		return this._momentinst.format(this._format);
 	}
 }
@@ -123,7 +121,7 @@ class DateTimeUtil {
 	}
 
 	static nowtimeString(): string {
-		return moment().format("HH:mm");
+		return moment().format('HH:mm');
 	}
 }
 
@@ -153,12 +151,12 @@ class CursorPositioner {
 		const editor = getEditor();
 		const curPos = editor.selection.active;
 
-		const doc = editor.document
+		const doc = editor.document;
 		const currentLine = doc.lineAt(curPos).text;
-		const currentLineLength = currentLine.length
+		const currentLineLength = currentLine.length;
 
 		const newY = curPos.line;
-		const newX = currentLineLength
+		const newX = currentLineLength;
 
 		return curPos.with(newY, newX);
 	}
@@ -221,8 +219,8 @@ class CursorPositioner {
 		const editor = getEditor();
 		const curPos = editor.selection.active;
 
-		const startpos = curPos.with(curPos.line, POS_STARTTIME)
-		const endpos = curPos.with(curPos.line, POS_STARTTIME + LEN_TIME)
+		const startpos = curPos.with(curPos.line, POS_STARTTIME);
+		const endpos = curPos.with(curPos.line, POS_STARTTIME + LEN_TIME);
 		const range = new vscode.Range(startpos, endpos);
 		return range;
 	}
@@ -231,8 +229,8 @@ class CursorPositioner {
 		const editor = getEditor();
 		const curPos = editor.selection.active;
 
-		const startpos = curPos.with(curPos.line, POS_ENDTIME)
-		const endpos = curPos.with(curPos.line, POS_ENDTIME + LEN_TIME)
+		const startpos = curPos.with(curPos.line, POS_ENDTIME);
+		const endpos = curPos.with(curPos.line, POS_ENDTIME + LEN_TIME);
 		const range = new vscode.Range(startpos, endpos);
 		return range;
 	}
@@ -287,17 +285,18 @@ class CursorMover {
 	}
 }
 
-const LEN_DELIM = " ".length;
-const LEN_SORTMARK = "1".length;
-const LEN_DATE = "YYYY/MM/DD".length;
-const LEN_DOW = "Sun".length;
-const LEN_TIME = "HH:MM".length;
+const LEN_DELIM = ' '.length;
+const LEN_SORTMARK = '1'.length;
+const LEN_DATE = 'YYYY/MM/DD'.length;
+const LEN_DOW = 'Sun'.length;
+const LEN_TIME = 'HH:MM'.length;
 const LEN_FULLDATE = LEN_DATE + 1 + LEN_DOW;
-const LEN_BEFORE_DESCRIPTION = LEN_SORTMARK + LEN_DELIM + LEN_FULLDATE + LEN_DELIM + (LEN_TIME+1)*2;
-const EMPTYSORTMARK = " ".repeat(LEN_SORTMARK);
-const EMPTYDOW = " ".repeat(LEN_DOW);
-const EMPTYTIME = " ".repeat(LEN_TIME);
-const EMPTYFULLDATE = " ".repeat(LEN_FULLDATE);
+const LEN_BEFORE_DESCRIPTION =
+	LEN_SORTMARK + LEN_DELIM + LEN_FULLDATE + LEN_DELIM + (LEN_TIME + 1) * 2;
+const EMPTYSORTMARK = ' '.repeat(LEN_SORTMARK);
+const EMPTYDOW = ' '.repeat(LEN_DOW);
+const EMPTYTIME = ' '.repeat(LEN_TIME);
+const EMPTYFULLDATE = ' '.repeat(LEN_FULLDATE);
 
 // 012345678901234567890123456789
 //                              INBOX
@@ -312,26 +311,26 @@ const POS_DATE = 2;
 const POS_DESCRIPTION = 29;
 
 export class LineTester {
-	static isNotToday(line: string){
+	static isNotToday(line: string) {
 		const datePart = line.substr(POS_DATE, LEN_DATE);
 		const todayString = DateTimeUtil.todayString();
-		const isNotTodayLine = datePart != todayString
-		return isNotTodayLine
+		const isNotTodayLine = datePart != todayString;
+		return isNotTodayLine;
 	}
 
-	static isNotStarted(line: string){
+	static isNotStarted(line: string) {
 		const startTimePart = line.substr(POS_STARTTIME, LEN_TIME);
-		return startTimePart == EMPTYTIME
+		return startTimePart == EMPTYTIME;
 	}
 
-	static isNotEnded(line: string){
+	static isNotEnded(line: string) {
 		const endTimePart = line.substr(POS_ENDTIME, LEN_TIME);
-		return endTimePart == EMPTYTIME
+		return endTimePart == EMPTYTIME;
 	}
 }
 
-function showMenu(){
-	vscode.commands.executeCommand("editor.action.showContextMenu");
+function showMenu() {
+	vscode.commands.executeCommand('editor.action.showContextMenu');
 }
 
 // 操作系関数の実装方針
@@ -342,35 +341,33 @@ function showMenu(){
 //   - これらを考慮すると, 理由2で返せる Promise に合わせるしかない.
 // - テストコードからアクセスできるよう export する.
 
-export async function addTask(){
+export async function addTask() {
 	const todayString = DateTimeUtil.todayString();
 	const inserteeString = `${EMPTYSORTMARK} ${todayString} ${EMPTYDOW} ${EMPTYTIME} ${EMPTYTIME} \n`;
-	return _addLine(inserteeString)
+	return _addLine(inserteeString);
 }
 
-export async function addInbox(){
+export async function addInbox() {
 	const inserteeString = `${EMPTYSORTMARK} ${EMPTYFULLDATE} ${EMPTYTIME} ${EMPTYTIME} \n`;
-	return _addLine(inserteeString)
+	return _addLine(inserteeString);
 }
 
-export async function _addLine(inserteeString: string){
+export async function _addLine(inserteeString: string) {
 	const editor = getEditor();
 	const inserteePos = CursorPositioner.linetop();
-	const f = function(editBuilder: vscode.TextEditorEdit): void{
+	const f = function (editBuilder: vscode.TextEditorEdit): void {
 		editBuilder.insert(inserteePos, inserteeString);
-	}
-	return editor.edit(f).then(
-		() => {
-			// - 一つ上の行に insert される
-			// - add した task のタスク名(inboxのインボックス名)を編集したい
-			// ので, 一つ上の行の description にカーソルを持っていく.
-			CursorMover.startofdescriptionofprevline();
-			return true
-		}
-	)
+	};
+	return editor.edit(f).then(() => {
+		// - 一つ上の行に insert される
+		// - add した task のタスク名(inboxのインボックス名)を編集したい
+		// ので, 一つ上の行の description にカーソルを持っていく.
+		CursorMover.startofdescriptionofprevline();
+		return true;
+	});
 }
 
-export async function copyTask(){
+export async function copyTask() {
 	const editor = getEditor();
 	const doc = editor.document;
 	const currentLine = doc.lineAt(CursorPositioner.current()).text;
@@ -384,7 +381,7 @@ export async function copyTask(){
 	//               line[x-1]
 	// aaaaaaaIaa    line[x]
 	//               line[x+1]
-	// 
+	//
 	//               line[x-1]
 	// aaaaaaaIaa    line[x]    <== 挿入された行. x行目で変わらずアクセスできる.
 	// aaaaaaaaa     line[x+1]
@@ -395,68 +392,66 @@ export async function copyTask(){
 
 	// insert: 現在行を複製する.
 	// replace: 複製した行の開始/終了時刻をクリアする(複製後は todo task として扱いたいはず).
-	const f = function(editBuilder: vscode.TextEditorEdit): void{
+	const f = function (editBuilder: vscode.TextEditorEdit): void {
 		editBuilder.insert(inserteePos, inserteeString);
 		editBuilder.replace(replaceeRange, afterString);
-	}
-	return editor.edit(f).then(
-		(isSucceedEdit) => {
-			const isNotSucceedEdit = !isSucceedEdit
-			if(isNotSucceedEdit){
-				return false
-			}
-			CursorMover.golineend();
-			return true;
+	};
+	return editor.edit(f).then((isSucceedEdit) => {
+		const isNotSucceedEdit = !isSucceedEdit;
+		if (isNotSucceedEdit) {
+			return false;
 		}
-	)
+		CursorMover.golineend();
+		return true;
+	});
 }
 
-async function doSave(){
+async function doSave() {
 	const editor = getEditor();
 	const doc = editor.document;
 
 	// 変更が無い状態(not dirty)で save() すると failed になるので防止.
-	const notChanged = !(doc.isDirty)
-	if(notChanged){
-		return Promise.resolve(true)
+	const notChanged = !doc.isDirty;
+	if (notChanged) {
+		return Promise.resolve(true);
 	}
 
 	const promise = editor.document.save();
-	return promise.then(
-		(couldSave) => {
-			const couldNotSave = !couldSave
-			if(couldNotSave){
-				abort("Failed to save()");
+	return promise
+		.then((couldSave) => {
+			const couldNotSave = !couldSave;
+			if (couldNotSave) {
+				abort('Failed to save()');
 				throw new Error();
 			}
-		}
-	).then(
-		() => {return true}
-	)
+		})
+		.then(() => {
+			return true;
+		});
 }
 
-export async function doSort(){
+export async function doSort() {
 	const commandLine = `${getHelperCommandline()} --sort`;
 	console.log(`Sort: "${commandLine}"`);
-	return saveAndExec(commandLine)
+	return saveAndExec(commandLine);
 }
 
-async function doRepeatIfPossible(){
+async function doRepeatIfPossible() {
 	const editor = getEditor();
 	const curPos = CursorPositioner.current();
 	const doc = editor.document;
 	const currentLine = doc.lineAt(curPos).text;
-	if(currentLine.indexOf("rep:") == -1){
-		return Promise.resolve(true)
+	if (currentLine.indexOf('rep:') == -1) {
+		return Promise.resolve(true);
 	}
 
 	const curLineNumber = curPos.line;
 	const commandLine = `${getHelperCommandline()} -y ${curLineNumber} --repeat`;
 	console.log(`Repeat: "${commandLine}"`);
-	return saveAndExec(commandLine)
+	return saveAndExec(commandLine);
 }
 
-export async function startTask(){
+export async function startTask() {
 	// s  e  >DStart>  s  e
 	// ---------------------
 	// x  x            o  x    OK. 普通に start する.
@@ -473,22 +468,22 @@ export async function startTask(){
 	const currentLine = doc.lineAt(CursorPositioner.current()).text;
 	const currentStartTimeValue = currentLine.substr(POS_STARTTIME, LEN_TIME);
 	let afterString = EMPTYTIME;
-	if(currentStartTimeValue == EMPTYTIME){
+	if (currentStartTimeValue == EMPTYTIME) {
 		afterString = DateTimeUtil.nowtimeString();
 	}
 
-	const startTimeRange = CursorPositioner.rangeBetweenStartTime()
+	const startTimeRange = CursorPositioner.rangeBetweenStartTime();
 
-	const f = function(editBuilder: vscode.TextEditorEdit): void{
+	const f = function (editBuilder: vscode.TextEditorEdit): void {
 		editBuilder.replace(startTimeRange, afterString);
 		CursorMover.endofstarttime();
-	}
-	return editor.edit(f).then(
-		(isSucceedEdit) => {return isSucceedEdit}
-	)
+	};
+	return editor.edit(f).then((isSucceedEdit) => {
+		return isSucceedEdit;
+	});
 }
 
-export async function endTask(){
+export async function endTask() {
 	// s  e  >DoEnd>  s  e
 	// -------------------
 	// x  x           x  x    Invalid. start してないので end しない.
@@ -505,45 +500,46 @@ export async function endTask(){
 
 	const currentStartTimeValue = currentLine.substr(POS_STARTTIME, LEN_TIME);
 	const isNotStarted = currentStartTimeValue == EMPTYTIME;
-	if(isNotStarted){
-		return Promise.resolve(true)
+	if (isNotStarted) {
+		return Promise.resolve(true);
 	}
 
 	const currentEndTimeValue = currentLine.substr(POS_ENDTIME, LEN_TIME);
 	const isDoneNewly = currentEndTimeValue == EMPTYTIME;
-	const shouldCopyBecauseRepeat = currentLine.indexOf("rep:") != -1;
+	const shouldCopyBecauseRepeat = currentLine.indexOf('rep:') != -1;
 
 	let afterStringForEndTime = EMPTYTIME;
-	if(isDoneNewly){
+	if (isDoneNewly) {
 		afterStringForEndTime = DateTimeUtil.nowtimeString();
 	}
-	const endTimeRange = CursorPositioner.rangeBetweenEndTime()
-	const endTimeBuilder = function(editBuilder: vscode.TextEditorEdit): void{
+	const endTimeRange = CursorPositioner.rangeBetweenEndTime();
+	const endTimeBuilder = function (editBuilder: vscode.TextEditorEdit): void {
 		editBuilder.replace(endTimeRange, afterStringForEndTime);
-	}	
+	};
 
-	return editor.edit(endTimeBuilder).then(
-		(isSucceedEdit) => {
-			const isNotSucceedEdit = !isSucceedEdit
-			if(isNotSucceedEdit){
+	return editor
+		.edit(endTimeBuilder)
+		.then((isSucceedEdit) => {
+			const isNotSucceedEdit = !isSucceedEdit;
+			if (isNotSucceedEdit) {
 				return false;
 			}
-			const isNotDoneNewly = !isDoneNewly
-			if(isNotDoneNewly){
+			const isNotDoneNewly = !isDoneNewly;
+			if (isNotDoneNewly) {
 				return false;
 			}
-			const notNeedRepeating = !shouldCopyBecauseRepeat
-			if(notNeedRepeating){
-				return false
+			const notNeedRepeating = !shouldCopyBecauseRepeat;
+			if (notNeedRepeating) {
+				return false;
 			}
 			return copyTask();
-		}
-	).then(
-		() => {return doRepeatIfPossible()}
-	)
+		})
+		.then(() => {
+			return doRepeatIfPossible();
+		});
 }
 
-function jumpToStartingTask(){
+function jumpToStartingTask() {
 	const editor = getEditor();
 	const doc = editor.document;
 	const lineCount = doc.lineCount;
@@ -553,27 +549,30 @@ function jumpToStartingTask(){
 	// - VSCode に find(keyword, options) のような関数があれば正規表現 `[0-9]{2}\:[0-9]{2}( ){7}` で一発だが, 無い.
 
 	let foundLineNumber = -1;
-	for(let curLineNumber=0; curLineNumber<lineCount; curLineNumber++){
+	for (let curLineNumber = 0; curLineNumber < lineCount; curLineNumber++) {
 		const line = doc.lineAt(curLineNumber).text;
-		if(line.length < LEN_BEFORE_DESCRIPTION){
+		if (line.length < LEN_BEFORE_DESCRIPTION) {
 			continue;
 		}
-		if(LineTester.isNotStarted(line)){
-			continue
+		if (LineTester.isNotStarted(line)) {
+			continue;
 		}
-		const alreadyEnded = !(LineTester.isNotEnded(line))
-		if(alreadyEnded){
-			continue
+		const alreadyEnded = !LineTester.isNotEnded(line);
+		if (alreadyEnded) {
+			continue;
 		}
 		foundLineNumber = curLineNumber;
 		break;
 	}
-	if(foundLineNumber == -1){
+	if (foundLineNumber == -1) {
 		return;
 	}
 
 	const startPos = new vscode.Position(foundLineNumber, POS_STARTTIME);
-	const endPos = startPos.with(startPos.line, startPos.character + (LEN_TIME+1)*2)
+	const endPos = startPos.with(
+		startPos.line,
+		startPos.character + (LEN_TIME + 1) * 2
+	);
 	const sel = new vscode.Selection(startPos, endPos);
 	editor.selection = sel;
 
@@ -582,7 +581,7 @@ function jumpToStartingTask(){
 	editor.revealRange(range, vscode.TextEditorRevealType.Default);
 }
 
-function jumpToTodayTodo(){
+function jumpToTodayTodo() {
 	const editor = getEditor();
 	const doc = editor.document;
 	const lineCount = doc.lineCount;
@@ -590,32 +589,32 @@ function jumpToTodayTodo(){
 	// today todo は, datetime が今日 && starttime がない && endtime がないもの
 
 	let foundLineNumber = -1;
-	for(let curLineNumber=0; curLineNumber<lineCount; curLineNumber++){
+	for (let curLineNumber = 0; curLineNumber < lineCount; curLineNumber++) {
 		const line = doc.lineAt(curLineNumber).text;
-		if(line.length < LEN_BEFORE_DESCRIPTION){
+		if (line.length < LEN_BEFORE_DESCRIPTION) {
 			continue;
 		}
-		if(LineTester.isNotToday(line)){
+		if (LineTester.isNotToday(line)) {
 			continue;
 		}
-		const alreadyStarted = !(LineTester.isNotStarted(line))
-		const alreadyEnded = !(LineTester.isNotEnded(line))
-		if(alreadyStarted){
-			continue
+		const alreadyStarted = !LineTester.isNotStarted(line);
+		const alreadyEnded = !LineTester.isNotEnded(line);
+		if (alreadyStarted) {
+			continue;
 		}
-		if(alreadyEnded){
-			continue
+		if (alreadyEnded) {
+			continue;
 		}
 		// 最初に見つかった行 = 先頭行なのでこれで確定して良い.
 		foundLineNumber = curLineNumber;
 		break;
 	}
-	if(foundLineNumber == -1){
+	if (foundLineNumber == -1) {
 		return;
 	}
 
 	const startPos = new vscode.Position(foundLineNumber, POS_DESCRIPTION);
-	const endPos = startPos.with(startPos.line, startPos.character)
+	const endPos = startPos.with(startPos.line, startPos.character);
 	const sel = new vscode.Selection(startPos, endPos);
 	editor.selection = sel;
 
@@ -623,15 +622,15 @@ function jumpToTodayTodo(){
 	editor.revealRange(range, vscode.TextEditorRevealType.Default);
 }
 
-function jumpToNextSeparator(){
-	jumpToSeparator("down");
+function jumpToNextSeparator() {
+	jumpToSeparator('down');
 }
 
-function jumpToPrevSeparator(){
-	jumpToSeparator("up");
+function jumpToPrevSeparator() {
+	jumpToSeparator('up');
 }
 
-function jumpToSeparator(command: string){
+function jumpToSeparator(command: string) {
 	const editor = getEditor();
 	const doc = editor.document;
 	const lineCount = doc.lineCount;
@@ -642,17 +641,17 @@ function jumpToSeparator(command: string){
 	// - Why 自力? -> Symbol を作り込むのは大変だし Jump to Next Symbol 的なコマンドもサポートされてないから.
 
 	const lineNumberOfSeparators = [];
-	for(let curLineNumber=0; curLineNumber<lineCount; curLineNumber++){
+	for (let curLineNumber = 0; curLineNumber < lineCount; curLineNumber++) {
 		const line = doc.lineAt(curLineNumber).text;
-		if(line.length < LEN_BEFORE_DESCRIPTION){
+		if (line.length < LEN_BEFORE_DESCRIPTION) {
 			continue;
 		}
-		if(line.indexOf("--") == -1){
+		if (line.indexOf('--') == -1) {
 			continue;
 		}
 		lineNumberOfSeparators.push(curLineNumber);
 	}
-	if(lineNumberOfSeparators.length == 0){
+	if (lineNumberOfSeparators.length == 0) {
 		return;
 	}
 
@@ -669,26 +668,26 @@ function jumpToSeparator(command: string){
 	// down(下の区切り)時は上から見ていって最初にヒットした区切りにジャンプ.
 
 	let destLineNumber = -1;
-	if(command == "up"){
-		for(let i=(lineNumberOfSeparators.length)-1; i>=0; i--){
+	if (command == 'up') {
+		for (let i = lineNumberOfSeparators.length - 1; i >= 0; i--) {
 			const lineNumberofSeparator = lineNumberOfSeparators[i];
 			const cursorLineNumber = curPos.line;
-			if(lineNumberofSeparator < cursorLineNumber){
+			if (lineNumberofSeparator < cursorLineNumber) {
 				destLineNumber = lineNumberofSeparator;
 				break;
 			}
 		}
-	}else if(command == "down"){
-		for(let i=0; i<lineNumberOfSeparators.length; i++){
+	} else if (command == 'down') {
+		for (let i = 0; i < lineNumberOfSeparators.length; i++) {
 			const lineNumberofSeparator = lineNumberOfSeparators[i];
 			const cursorLineNumber = curPos.line;
-			if(cursorLineNumber < lineNumberofSeparator){
+			if (cursorLineNumber < lineNumberofSeparator) {
 				destLineNumber = lineNumberofSeparator;
 				break;
 			}
 		}
 	}
-	if(destLineNumber == -1){
+	if (destLineNumber == -1) {
 		return;
 	}
 
@@ -700,54 +699,52 @@ function jumpToSeparator(command: string){
 	editor.revealRange(range, vscode.TextEditorRevealType.Default);
 }
 
-async function walkTask(){
-	const promise = input("Input a day diff(Ex: 1, +7, -4)");
-	return promise.then(
-		(inputTextMaybe) => {
-			if(inputTextMaybe === undefined){
-				return false
-			}
-			const inputText = inputTextMaybe;
-			const walkDay = parseInt(inputText);
-			const isNotDayValue = isNaN(walkDay)
-			if(isNotDayValue){
-				return false
-			}
-			return walkTaskMain(walkDay);
+async function walkTask() {
+	const promise = input('Input a day diff(Ex: 1, +7, -4)');
+	return promise.then((inputTextMaybe) => {
+		if (inputTextMaybe === undefined) {
+			return false;
 		}
-	)
+		const inputText = inputTextMaybe;
+		const walkDay = parseInt(inputText);
+		const isNotDayValue = isNaN(walkDay);
+		if (isNotDayValue) {
+			return false;
+		}
+		return walkTaskMain(walkDay);
+	});
 }
 
-export function walkTaskMain(walkDay: number){
+export function walkTaskMain(walkDay: number) {
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} -d ${walkDay} --walk`;
 	console.log(`WalkDay: "${commandLine}"`);
-	return saveAndExec(commandLine)
+	return saveAndExec(commandLine);
 }
 
-export function walkTask1Day(){
+export function walkTask1Day() {
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} --smartwalk`;
 	console.log(`WalkDay+1(SmartWark): "${commandLine}"`);
-	return saveAndExec(commandLine)
+	return saveAndExec(commandLine);
 }
 
-export function walkTaskToToday(){
+export function walkTaskToToday() {
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} --to-today`;
 	console.log(`Walk To Today: "${commandLine}"`);
-	return saveAndExec(commandLine)
+	return saveAndExec(commandLine);
 }
 
-export function completeSimply(){
+export function completeSimply() {
 	const commandLine = `${getHelperCommandline()} --use-simple-completion`;
 	console.log(`Simple Completion: "${commandLine}"`);
-	return saveAndExec(commandLine)
+	return saveAndExec(commandLine);
 }
 
-function reportDialog(){
-	let reportArgs = "--today-dialog-report";
-	if(isSelected()){
+function reportDialog() {
+	let reportArgs = '--today-dialog-report';
+	if (isSelected()) {
 		const yargs = getHelperYargs();
 		reportArgs = `${yargs} --selected-range-dialog-report`;
 	}
@@ -756,9 +753,12 @@ function reportDialog(){
 	exec(commandLine, callbackOnExec);
 }
 
-export function activate(context: vscode.ExtensionContext):void {
+export function activate(context: vscode.ExtensionContext): void {
 	/* eslint-disable-next-line @typescript-eslint/no-empty-function */
-	const dummy_for_menu_separator = vscode.commands.registerCommand('tritask.dummy', () => {});
+	const dummy_for_menu_separator = vscode.commands.registerCommand(
+		'tritask.dummy',
+		() => {}
+	);
 
 	const menu_show = vscode.commands.registerCommand('tritask.menu.show', () => {
 		showMenu();
@@ -780,25 +780,40 @@ export function activate(context: vscode.ExtensionContext):void {
 		doSort();
 	});
 
-	const jump_to_starting = vscode.commands.registerCommand('tritask.jump.starting', () => {
-		jumpToStartingTask();
-	});
+	const jump_to_starting = vscode.commands.registerCommand(
+		'tritask.jump.starting',
+		() => {
+			jumpToStartingTask();
+		}
+	);
 
-	const jump_to_today_todo = vscode.commands.registerCommand('tritask.jump.today.todo', () => {
-		jumpToTodayTodo();
-	});
+	const jump_to_today_todo = vscode.commands.registerCommand(
+		'tritask.jump.today.todo',
+		() => {
+			jumpToTodayTodo();
+		}
+	);
 
-	const jump_to_next_separator = vscode.commands.registerCommand('tritask.jump.separator.next', () => {
-		jumpToNextSeparator();
-	});
+	const jump_to_next_separator = vscode.commands.registerCommand(
+		'tritask.jump.separator.next',
+		() => {
+			jumpToNextSeparator();
+		}
+	);
 
-	const jump_to_prev_separator = vscode.commands.registerCommand('tritask.jump.separator.prev', () => {
-		jumpToPrevSeparator();
-	});
+	const jump_to_prev_separator = vscode.commands.registerCommand(
+		'tritask.jump.separator.prev',
+		() => {
+			jumpToPrevSeparator();
+		}
+	);
 
-	const task_start = vscode.commands.registerCommand('tritask.task.start', () => {
-		startTask();
-	});
+	const task_start = vscode.commands.registerCommand(
+		'tritask.task.start',
+		() => {
+			startTask();
+		}
+	);
 
 	const task_end = vscode.commands.registerCommand('tritask.task.end', () => {
 		endTask();
@@ -808,26 +823,39 @@ export function activate(context: vscode.ExtensionContext):void {
 		walkTask();
 	});
 
-	const task_walk_plus1 = vscode.commands.registerCommand('tritask.task.walk.1', () => {
-		walkTask1Day();
-	});
+	const task_walk_plus1 = vscode.commands.registerCommand(
+		'tritask.task.walk.1',
+		() => {
+			walkTask1Day();
+		}
+	);
 
-	const task_walk_to_today = vscode.commands.registerCommand('tritask.task.walk.today', () => {
-		walkTaskToToday();
-	});
+	const task_walk_to_today = vscode.commands.registerCommand(
+		'tritask.task.walk.today',
+		() => {
+			walkTaskToToday();
+		}
+	);
 
-	const completion_simple = vscode.commands.registerCommand('tritask.completion.simple', () => {
-		completeSimply();
-	});
+	const completion_simple = vscode.commands.registerCommand(
+		'tritask.completion.simple',
+		() => {
+			completeSimply();
+		}
+	);
 
-	const report_dialog = vscode.commands.registerCommand('tritask.report.dialog', () => {
-		reportDialog();
-	});
+	const report_dialog = vscode.commands.registerCommand(
+		'tritask.report.dialog',
+		() => {
+			reportDialog();
+		}
+	);
 
 	context.subscriptions.push(
 		dummy_for_menu_separator,
 		menu_show,
-		task_add, inbox_add,
+		task_add,
+		inbox_add,
 		task_copy,
 		sort,
 		task_start,
@@ -843,4 +871,3 @@ export function activate(context: vscode.ExtensionContext):void {
 		report_dialog
 	);
 }
- 
