@@ -445,16 +445,13 @@ function doRepeatIfPossible(){
 	const doc = editor.document;
 	const currentLine = doc.lineAt(curPos).text;
 	if(currentLine.indexOf("rep:") == -1){
-		return;
+		return Promise.resolve(true)
 	}
 
 	const curLineNumber = curPos.line;
 	const commandLine = `${getHelperCommandline()} -y ${curLineNumber} --repeat`;
 	console.log(`Repeat: "${commandLine}"`);
-
-	doSave();
-
-	exec(commandLine, callbackOnExec);
+	return saveAndExec(commandLine)
 }
 
 export function startTask(){
@@ -722,39 +719,27 @@ function walkTaskMain(walkDay: number){
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} -d ${walkDay} --walk`;
 	console.log(`WalkDay: "${commandLine}"`);
-
-	doSave();
-
-	exec(commandLine, callbackOnExec);
+	return saveAndExec(commandLine)
 }
 
 function walkTask1Day(){
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} --smartwalk`;
 	console.log(`WalkDay+1(SmartWark): "${commandLine}"`);
-
-	doSave();
-
-	exec(commandLine, callbackOnExec);
+	return saveAndExec(commandLine)
 }
 
 function walkTaskToToday(){
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} --to-today`;
 	console.log(`Walk To Today: "${commandLine}"`);
-
-	doSave();
-
-	exec(commandLine, callbackOnExec);
+	return saveAndExec(commandLine)
 }
 
 function completeSimply(){
 	const commandLine = `${getHelperCommandline()} --use-simple-completion`;
 	console.log(`Simple Completion: "${commandLine}"`);
-
-	doSave();
-
-	exec(commandLine, callbackOnExec);
+	return saveAndExec(commandLine)
 }
 
 function reportDialog(){
@@ -765,7 +750,6 @@ function reportDialog(){
 	}
 	const commandLine = `${getHelperCommandline()} ${reportArgs}`;
 	console.log(`Reporting: "${commandLine}"`);
-
 	exec(commandLine, callbackOnExec);
 }
 
