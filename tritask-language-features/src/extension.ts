@@ -450,11 +450,7 @@ function doRepeatIfPossible(){
 
 	doSave();
 
-	exec(commandLine, (err) => {
-		if(err){
-			console.log(err);
-		}
-	});
+	exec(commandLine, callbackOnExec);
 }
 
 export function startTask(){
@@ -725,11 +721,7 @@ function walkTaskMain(walkDay: number){
 
 	doSave();
 
-	exec(commandLine, (err) => {
-		if(err){
-			console.log(err);
-		}
-	});
+	exec(commandLine, callbackOnExec);
 }
 
 function walkTask1Day(){
@@ -739,11 +731,7 @@ function walkTask1Day(){
 
 	doSave();
 
-	exec(commandLine, (err) => {
-		if(err){
-			console.log(err);
-		}
-	});
+	exec(commandLine, callbackOnExec);
 }
 
 function walkTaskToToday(){
@@ -753,11 +741,7 @@ function walkTaskToToday(){
 
 	doSave();
 
-	exec(commandLine, (err) => {
-		if(err){
-			console.log(err);
-		}
-	});
+	exec(commandLine, callbackOnExec);
 }
 
 function completeSimply(){
@@ -766,11 +750,7 @@ function completeSimply(){
 
 	doSave();
 
-	exec(commandLine, (err) => {
-		if(err){
-			console.log(err);
-		}
-	});
+	exec(commandLine, callbackOnExec);
 }
 
 function reportDialog(){
@@ -782,11 +762,7 @@ function reportDialog(){
 	const commandLine = `${getHelperCommandline()} ${reportArgs}`;
 	console.log(`Reporting: "${commandLine}"`);
 
-	exec(commandLine, (err) => {
-		if(err){
-			console.log(err);
-		}
-	});
+	exec(commandLine, callbackOnExec);
 }
 
 export function activate(context: vscode.ExtensionContext):void {
