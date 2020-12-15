@@ -393,35 +393,44 @@ export async function copyTask(){
 	)
 }
 
-function doSave(){
+async function doSave(){
 	const editor = getEditor();
 	const doc = editor.document;
 
 	// 変更が無い状態(not dirty)で save() すると failed になるので防止.
-	if(!doc.isDirty){
-		return;
+	const notChanged = !(doc.isDirty)
+	if(notChanged){
+		return Promise.resolve(true)
 	}
 
 	const promise = editor.document.save();
-	promise.then((result) =>{
-		if(!result){
-			abort("Failed to save()");
-			throw new Error();
+	return promise.then(
+		(couldSave) => {
+			const couldNotSave = !couldSave
+			if(couldNotSave){
+				abort("Failed to save()");
+				throw new Error();
+			}
 		}
-	});
+	).then(
+		() => {return true}
+	)
 }
 
-function doSort(){
+export async function doSort(){
 	const commandLine = `${getHelperCommandline()} --sort`;
 	console.log(`Sort: "${commandLine}"`);
 
-	doSave();
-
-	exec(commandLine, (err) => {
-		if(err){
-			console.log(err);
+	const promise = doSave();
+	return promise.then(
+		() => {
+			exec(commandLine, (err) => {
+				if(err){
+					console.log(err);
+				}
+			});
 		}
-	});
+	)
 }
 
 function doRepeatIfPossible(){
