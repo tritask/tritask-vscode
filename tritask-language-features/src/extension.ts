@@ -439,7 +439,7 @@ export async function doSort(){
 	return saveAndExec(commandLine)
 }
 
-function doRepeatIfPossible(){
+async function doRepeatIfPossible(){
 	const editor = getEditor();
 	const curPos = CursorPositioner.current();
 	const doc = editor.document;
@@ -484,7 +484,7 @@ export function startTask(){
 	return editor.edit(f);
 }
 
-export function endTask(){
+export async function endTask(){
 	// s  e  >DoEnd>  s  e
 	// -------------------
 	// x  x           x  x    Invalid. start してないので end しない.
@@ -502,7 +502,7 @@ export function endTask(){
 	const currentStartTimeValue = currentLine.substr(POS_STARTTIME, LEN_TIME);
 	const isNotStarted = currentStartTimeValue == EMPTYTIME;
 	if(isNotStarted){
-		return;
+		return Promise.resolve(true)
 	}
 
 	const currentEndTimeValue = currentLine.substr(POS_ENDTIME, LEN_TIME);
@@ -535,9 +535,7 @@ export function endTask(){
 			return copyTask();
 		}
 	).then(
-		() => {
-			return doRepeatIfPossible()
-		}
+		() => {return doRepeatIfPossible()}
 	)
 }
 
@@ -698,45 +696,46 @@ function jumpToSeparator(command: string){
 	editor.revealRange(range, vscode.TextEditorRevealType.Default);
 }
 
-function walkTask(){
-	const thenable = input("Input a day diff(Ex: 1, +7, -4)");
-	thenable.then(
+async function walkTask(){
+	const promise = input("Input a day diff(Ex: 1, +7, -4)");
+	return promise.then(
 		(inputTextMaybe) => {
 			if(inputTextMaybe === undefined){
-				return;
+				return false
 			}
 			const inputText = inputTextMaybe;
 			const walkDay = parseInt(inputText);
-			if(isNaN(walkDay)){
-				return;
+			const isNotDayValue = isNaN(walkDay)
+			if(isNotDayValue){
+				return false
 			}
-			walkTaskMain(walkDay);
+			return walkTaskMain(walkDay);
 		}
 	)
 }
 
-function walkTaskMain(walkDay: number){
+export function walkTaskMain(walkDay: number){
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} -d ${walkDay} --walk`;
 	console.log(`WalkDay: "${commandLine}"`);
 	return saveAndExec(commandLine)
 }
 
-function walkTask1Day(){
+export function walkTask1Day(){
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} --smartwalk`;
 	console.log(`WalkDay+1(SmartWark): "${commandLine}"`);
 	return saveAndExec(commandLine)
 }
 
-function walkTaskToToday(){
+export function walkTaskToToday(){
 	const yargs = getHelperYargs();
 	const commandLine = `${getHelperCommandline()} ${yargs} --to-today`;
 	console.log(`Walk To Today: "${commandLine}"`);
 	return saveAndExec(commandLine)
 }
 
-function completeSimply(){
+export function completeSimply(){
 	const commandLine = `${getHelperCommandline()} --use-simple-completion`;
 	console.log(`Simple Completion: "${commandLine}"`);
 	return saveAndExec(commandLine)
