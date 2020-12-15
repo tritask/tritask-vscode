@@ -454,7 +454,7 @@ async function doRepeatIfPossible(){
 	return saveAndExec(commandLine)
 }
 
-export function startTask(){
+export async function startTask(){
 	// s  e  >DStart>  s  e
 	// ---------------------
 	// x  x            o  x    OK. 普通に start する.
@@ -481,7 +481,9 @@ export function startTask(){
 		editBuilder.replace(startTimeRange, afterString);
 		CursorMover.endofstarttime();
 	}
-	return editor.edit(f);
+	return editor.edit(f).then(
+		(isSucceedEdit) => {return isSucceedEdit}
+	)
 }
 
 export async function endTask(){
