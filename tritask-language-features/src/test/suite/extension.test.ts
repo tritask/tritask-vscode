@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { before, beforeEach, after } from 'mocha';
+import { before, beforeEach } from 'mocha';
 
 import * as vscode from 'vscode';
 
