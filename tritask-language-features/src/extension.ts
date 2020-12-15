@@ -125,7 +125,6 @@ class DateTimeUtil {
 	static nowtimeString(): string {
 		return moment().format("HH:mm");
 	}
-
 }
 
 class CursorPositioner {
@@ -237,7 +236,6 @@ class CursorPositioner {
 		const range = new vscode.Range(startpos, endpos);
 		return range;
 	}
-
 }
 
 // vscode.Selection で同期的に実装する.
@@ -337,7 +335,11 @@ function showMenu(){
 }
 
 // 操作系関数の実装方針
-// - VSCode の API が Thenable<boolean> を返す感じなので, これに倣う.
+// - Promise<boolean> を返すようにする
+//   - 理由1: VSCode の API が Thenable<boolean> を返すから.
+//   - 理由2: endTask() など, Thenable な処理する前に return したいケースがあるから.
+//   - 理由3: Thenable を new する手段がないから.
+//   - これらを考慮すると, 理由2で返せる Promise に合わせるしかない.
 // - テストコードからアクセスできるよう export する.
 
 export async function addTask(){
