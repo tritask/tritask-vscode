@@ -117,17 +117,21 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 
 	test('add task and inbox', async () => {
 		let isSuccess = false
+
 		isSuccess = await addTask()
-		isSuccess = isSuccess && await addInbox()
-		isSuccess = isSuccess && await addInbox()
-		isSuccess = isSuccess && await addTask()
-		isSuccess = isSuccess && await addTask()
+		assertTrue(isSuccess)
+		isSuccess = await addInbox()
+		assertTrue(isSuccess)
+		isSuccess = await addInbox()
+		assertTrue(isSuccess)
+		isSuccess = await addTask()
+		assertTrue(isSuccess)
+		isSuccess = await addTask()
+		assertTrue(isSuccess)
 
 		const editor = getEditor()
 		const lineCount = editor.document.lineCount
 		const LINECOUNT_OF_EMPTYFILE = 1
-
-		assertTrue(isSuccess)
 		assert.strictEqual(lineCount, 5 + LINECOUNT_OF_EMPTYFILE)
 
 		// a一つ上の行に add されていくので逆順に検査
