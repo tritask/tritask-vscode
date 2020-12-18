@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 
 import * as path from 'path'
 
-import { getSelfDirectory, getEditor, endTask } from '../../extension';
+import { getSelfDirectory, getEditor, endTask, copyTask } from '../../extension';
 import { addTask, addInbox, startTask } from '../../extension';
 import { LineTester } from '../../extension';
 import { start } from 'repl';
@@ -154,7 +154,6 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		// line:1 3 add / これは starting task にする
 		// line:2 2 add / これは done task にする
 		// line:3 1 inbox
-
 		IDE.goLineAt(1)
 		await startTask()
 		IDE.goLineAt(2)
@@ -165,6 +164,30 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		assertStarting(L(1))
 		assertDone(L(2))
 		assertInbox(L(3))
+
+		// line:0 4 add / これは todo task にする
+		// line:1 同上コピー <= todo のまま
+		// line:2 3 add / これは starting task にする
+		// line:3 同上コピー <= todo になる
+		// line:4 2 add / これは done task にする
+		// line:5 同上コピー <= todo になる
+		// line:6 1 inbox
+		// line:7 同上コピー <= inbox のまま
+		//
+		// コピーは上から順に行うが, 間にコピーされた行がはさまるので 2 行ずつズレながらやれば良い.
+		IDE.goLineAt(0)
+		await copyTask()
+		IDE.goLineAt(2)
+		await copyTask()
+		IDE.goLineAt(4)
+		await copyTask()
+		IDE.goLineAt(6)
+		await copyTask()
+
+		assertTodo(L(1))
+		assertTodo(L(3))
+		assertTodo(L(5))
+		assertInbox(L(7))
 	});
 
 	test('peek current document', async (done) => {
