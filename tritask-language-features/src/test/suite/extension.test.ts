@@ -5,9 +5,10 @@ import * as vscode from 'vscode';
 
 import * as path from 'path'
 
-import { getSelfDirectory, getEditor } from '../../extension';
+import { getSelfDirectory, getEditor, endTask } from '../../extension';
 import { addTask, addInbox, startTask } from '../../extension';
 import { LineTester } from '../../extension';
+import { start } from 'repl';
 
 // ここで採用している mocha + 非同期テストの書き方.
 // - suite と test を使う.
@@ -39,7 +40,18 @@ class IDE {
 		const line = doc.lineAt(lineNumber)
 		return line.text
 	}
+
+	static goLineAt(lineNumber: number){
+		const editor = getEditor();
+		const curPos = editor.selection.active;
+		const newY = lineNumber;
+		const newX = curPos.character;
+		const newPos = curPos.with(newY, newX);
+		const sel = new vscode.Selection(newPos, newPos);
+		editor.selection = sel;
+	}
 }
+const L = IDE.lineTextAt
 
 function assertTrue(b: boolean){
 	return assert.strictEqual(b, true)
@@ -52,6 +64,24 @@ function assertInbox(line: string){
 function assertAdded(line: string){
 	const isToday = !(LineTester.isNotToday(line))
 	assertTrue(isToday)
+}
+
+function assertStarting(line: string){
+	const isToday = !(LineTester.isNotToday(line))
+	const isStarted = !(LineTester.isNotStarted(line))
+	const isNotEnded = LineTester.isNotEnded(line)
+	assertTrue(isToday)
+	assertTrue(isStarted)
+	assertTrue(isNotEnded)
+}
+
+function assertDone(line: string){
+	const isToday = !(LineTester.isNotToday(line))
+	const isStarted = !(LineTester.isNotStarted(line))
+	const isEnded = !(LineTester.isNotEnded(line))
+	assertTrue(isToday)
+	assertTrue(isStarted)
+	assertTrue(isEnded)
 }
 
 suite('Test tritask operations on the VSCode Editor layer.', () => {
@@ -101,7 +131,6 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		assert.strictEqual(lineCount, 5 + LINECOUNT_OF_EMPTYFILE)
 
 		// a一つ上の行に add されていくので逆順に検査
-		const L = IDE.lineTextAt
 		assertAdded(L(0))
 		assertAdded(L(1))
 		assertInbox(L(2))
@@ -112,23 +141,30 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 	test('start, end and copy task', async () => {
 		let isSuccess = false
 
+		isSuccess = await addInbox()
+		assertTrue(isSuccess)
+		isSuccess = await addTask()
+		assertTrue(isSuccess)
+		isSuccess = await addTask()
+		assertTrue(isSuccess)
 		isSuccess = await addTask()
 		assertTrue(isSuccess)
 
-		isSuccess = await startTask()
-		assertTrue(isSuccess)
+		// line:0 4 add / これは todo task にする
+		// line:1 3 add / これは starting task にする
+		// line:2 2 add / これは done task にする
+		// line:3 1 inbox
 
-		const editor = getEditor()
-		const doc = editor.document
-		const lineCount = doc.lineCount
-		const text = doc.lineAt(0).text
-		const isTodayLine = !(LineTester.isNotToday(text))
-		const alreadyStarted = !(LineTester.isNotStarted(text))
+		IDE.goLineAt(1)
+		await startTask()
+		IDE.goLineAt(2)
+		await startTask()
+		await endTask()
 
-		assert.strictEqual(lineCount, 2)
-		assertTrue(isTodayLine)
-		assertTrue(alreadyStarted)
-		assertTrue(LineTester.isNotEnded(text))
+		assertAdded(L(0))
+		assertStarting(L(1))
+		assertDone(L(2))
+		assertInbox(L(3))
 	});
 
 	test('peek current document', async (done) => {
