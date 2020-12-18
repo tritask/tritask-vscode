@@ -41,21 +41,17 @@ class IDE {
 	}
 }
 
-function isTrue(b: boolean){
+function assertTrue(b: boolean){
 	return assert.strictEqual(b, true)
 }
 
-function isFalse(b: boolean){
-	return assert.strictEqual(b, false)
-}
-
 function assertInbox(line: string){
-	isTrue(LineTester.isInbox(line))
+	assertTrue(LineTester.isInbox(line))
 }
 
 function assertAdded(line: string){
 	const isToday = !(LineTester.isNotToday(line))
-	isTrue(isToday)
+	assertTrue(isToday)
 }
 
 suite('Test tritask operations on the VSCode Editor layer.', () => {
@@ -101,7 +97,7 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		const lineCount = editor.document.lineCount
 		const LINECOUNT_OF_EMPTYFILE = 1
 
-		isTrue(isSuccess)
+		assertTrue(isSuccess)
 		assert.strictEqual(lineCount, 5 + LINECOUNT_OF_EMPTYFILE)
 
 		// a一つ上の行に add されていくので逆順に検査
@@ -117,10 +113,10 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		let isSuccess = false
 
 		isSuccess = await addTask()
-		isTrue(isSuccess)
+		assertTrue(isSuccess)
 
 		isSuccess = await startTask()
-		isTrue(isSuccess)
+		assertTrue(isSuccess)
 
 		const editor = getEditor()
 		const doc = editor.document
@@ -130,9 +126,9 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		const alreadyStarted = !(LineTester.isNotStarted(text))
 
 		assert.strictEqual(lineCount, 2)
-		isTrue(isTodayLine)
-		isTrue(alreadyStarted)
-		isTrue(LineTester.isNotEnded(text))
+		assertTrue(isTodayLine)
+		assertTrue(alreadyStarted)
+		assertTrue(LineTester.isNotEnded(text))
 	});
 
 	test('peek current document', async (done) => {
