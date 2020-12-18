@@ -193,6 +193,66 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		assertInbox(L(7))
 	});
 
+	test('start and end all case', async () => {
+		let isSuccess = false
+
+		isSuccess = await addTask()
+		assertTrue(isSuccess)
+		assertTodo(L(0))
+
+		IDE.goLineAt(0)
+
+		// (start) (end)
+		// o が time 記入している, x がしていない.
+		//
+		// o o -> o x  Pattern1
+		// o o -> x o  Pattern2
+		// o o -> x x  しない. 2step
+		// o x -> o o  Pattern1
+		// o x -> x x  Pattern1
+		// o x -> x o  しない. 2step
+		// x o -> o x  Don't care(加えて2step)
+		// x o -> o o  Don't care
+		// x o -> x x  Don't care
+		// x x -> o o  しない. 2step
+		// x x -> o x  Pattern1
+		// x x -> x o  Pattern2
+
+		// pattern1: x x から o o を正常系で辿る
+		// ---------
+
+		// x x -> o x
+		await startTask()
+		assertStarting(L(0))
+
+		// o x -> o o
+		await endTask()
+		assertDone(L(0))
+
+		// o o -> o x
+		await endTask()
+		assertStarting(L(0))
+
+		// o x -> x x
+		await startTask()
+		assertTodo(L(0))
+
+		// pattern2: Don't care に至る入り口をガードできているか
+		// ---------
+
+		// x x -> x o はならない. 開始してないので終了できない.
+		await endTask()
+		assertTodo(L(0))
+
+		// 事前に x x -> o o する.
+		await startTask()
+		await endTask()
+		// o o -> x o はならない. 終了しているのに開始前にすることはできない.
+		await startTask()
+		assertDone(L(0))
+
+	});
+
 	test('peek current document', async (done) => {
 		const editor = getEditor()
 		console.log(editor.document)
