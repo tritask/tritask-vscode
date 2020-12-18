@@ -6,7 +6,7 @@ import * as vscode from 'vscode';
 import * as path from 'path'
 
 import { getSelfDirectory, getEditor } from '../../extension';
-import { addTask, startTask } from '../../extension';
+import { addTask, addInbox, startTask } from '../../extension';
 import { LineTester } from '../../extension';
 
 // ここで採用している mocha + 非同期テストの書き方.
@@ -32,13 +32,33 @@ class IDE {
 		const TESTEE_FULLLPATH = path.resolve(TESTEE_DIRECTORY, TESTEE_FILENAME)
 		return vscode.workspace.openTextDocument(TESTEE_FULLLPATH)
 	}
+
+	static lineTextAt(lineNumber: number){
+		const editor = getEditor();
+		const doc = editor.document
+		const line = doc.lineAt(lineNumber)
+		return line.text
+	}
 }
 
 function isTrue(b: boolean){
 	return assert.strictEqual(b, true)
 }
 
-suite('describe1', () => {
+function isFalse(b: boolean){
+	return assert.strictEqual(b, false)
+}
+
+function assertInbox(line: string){
+	isTrue(LineTester.isInbox(line))
+}
+
+function assertAdded(line: string){
+	const isToday = !(LineTester.isNotToday(line))
+	isTrue(isToday)
+}
+
+suite('Test tritask operations on the VSCode Editor layer.', () => {
 	before(() => {
 		const promise = IDE.openTesteeFile()
 		return promise.then(
@@ -69,16 +89,28 @@ suite('describe1', () => {
 		return editor.edit(clear)
 	});
 
-	test('add task.', async () => {
+	test('add task and inbox', async () => {
 		let isSuccess = false
 		isSuccess = await addTask()
+		isSuccess = isSuccess && await addInbox()
+		isSuccess = isSuccess && await addInbox()
 		isSuccess = isSuccess && await addTask()
 		isSuccess = isSuccess && await addTask()
 
 		const editor = getEditor()
 		const lineCount = editor.document.lineCount
+		const LINECOUNT_OF_EMPTYFILE = 1
+
 		isTrue(isSuccess)
-		assert.strictEqual(lineCount, 4)
+		assert.strictEqual(lineCount, 5 + LINECOUNT_OF_EMPTYFILE)
+
+		// a一つ上の行に add されていくので逆順に検査
+		const L = IDE.lineTextAt
+		assertAdded(L(0))
+		assertAdded(L(1))
+		assertInbox(L(2))
+		assertInbox(L(3))
+		assertAdded(L(4))
 	});
 
 	test('start, end and copy task', async () => {

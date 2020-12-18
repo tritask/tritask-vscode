@@ -318,6 +318,13 @@ export class LineTester {
 		return isNotTodayLine;
 	}
 
+	static isInbox(line: string) {
+		const beforeDescription = line.substr(0, LEN_BEFORE_DESCRIPTION)
+		const isBeforeDescriptionEmpty = beforeDescription.trim() == ''
+		const isInbox = isBeforeDescriptionEmpty
+		return isInbox
+	}
+
 	static isNotStarted(line: string) {
 		const startTimePart = line.substr(POS_STARTTIME, LEN_TIME);
 		return startTimePart == EMPTYTIME;
