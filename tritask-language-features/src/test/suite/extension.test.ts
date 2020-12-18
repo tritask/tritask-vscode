@@ -61,7 +61,7 @@ function assertInbox(line: string){
 	assertTrue(LineTester.isInbox(line))
 }
 
-function assertAdded(line: string){
+function assertTodo(line: string){
 	const isToday = !(LineTester.isNotToday(line))
 	assertTrue(isToday)
 }
@@ -131,11 +131,11 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		assert.strictEqual(lineCount, 5 + LINECOUNT_OF_EMPTYFILE)
 
 		// a一つ上の行に add されていくので逆順に検査
-		assertAdded(L(0))
-		assertAdded(L(1))
+		assertTodo(L(0))
+		assertTodo(L(1))
 		assertInbox(L(2))
 		assertInbox(L(3))
-		assertAdded(L(4))
+		assertTodo(L(4))
 	});
 
 	test('start, end and copy task', async () => {
@@ -161,7 +161,7 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		await startTask()
 		await endTask()
 
-		assertAdded(L(0))
+		assertTodo(L(0))
 		assertStarting(L(1))
 		assertDone(L(2))
 		assertInbox(L(3))
