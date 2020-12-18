@@ -8,7 +8,6 @@ import * as path from 'path'
 import { getSelfDirectory, getEditor, endTask, copyTask } from '../../extension';
 import { addTask, addInbox, startTask } from '../../extension';
 import { LineTester } from '../../extension';
-import { start } from 'repl';
 
 // ここで採用している mocha + 非同期テストの書き方.
 // - suite と test を使う.
