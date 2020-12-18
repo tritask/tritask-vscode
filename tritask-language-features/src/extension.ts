@@ -463,7 +463,7 @@ export async function startTask() {
 	// ---------------------
 	// x  x            o  x    OK. 普通に start する.
 	// o  x            x  x    OK. トグルで start をやめる.
-	// o  o            -  -    Don't care.
+	// o  o            o  o    NG. Invalid ケースに移っちゃうのでトグルしない.
 	// x  o            -  -    Don't care.
 	//
 	// x  o のケースが Invalid(endTask参照) なので,
@@ -473,6 +473,13 @@ export async function startTask() {
 	const editor = getEditor();
 	const doc = editor.document;
 	const currentLine = doc.lineAt(CursorPositioner.current()).text;
+
+	const isStarted = !(LineTester.isNotStarted(currentLine))
+	const isEnded = !(LineTester.isNotEnded(currentLine))
+	if (isStarted && isEnded){
+		return Promise.resolve(true);
+	}
+
 	const currentStartTimeValue = currentLine.substr(POS_STARTTIME, LEN_TIME);
 	let afterString = EMPTYTIME;
 	if (currentStartTimeValue == EMPTYTIME) {

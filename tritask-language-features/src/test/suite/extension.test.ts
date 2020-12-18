@@ -218,7 +218,7 @@ suite('Test tritask operations on the VSCode Editor layer.', () => {
 		// x x -> o x  Pattern1
 		// x x -> x o  Pattern2
 
-		// pattern1: x x から o o を正常系で辿る
+		// pattern1: x x -> o o -> x x と往復できるか
 		// ---------
 
 		// x x -> o x
