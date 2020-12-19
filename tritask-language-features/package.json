@@ -6,7 +6,7 @@
 	"repository": "https://github.com/tritask/tritask-vscode",
 	"version": "0.0.2",
 	"engines": {
-		"vscode": "^1.36.0"
+		"vscode": "^1.51.0"
 	},
 	"main": "./out/extension.js",
 	"categories": [
