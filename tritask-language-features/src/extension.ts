@@ -6,7 +6,7 @@ const exec = child_process.exec;
 
 moment.locale('ja');
 
-const isMacOS = process.platform == 'darwin'
+const isMacOS = process.platform == 'darwin';
 
 const SELF_EXTENSION_ID = 'stakiran.tritask-language-features';
 const HELPER_FILENAME = 'helper.py';
@@ -356,14 +356,14 @@ export async function addTask() {
 	const currentLine = doc.lineAt(CursorPositioner.current()).text;
 	const currentDateValue = currentLine.substr(POS_DATE, LEN_DATE);
 
-	let inserteeDate = currentDateValue
+	let inserteeDate = currentDateValue;
 
-	const isDateFieldNotFound = currentDateValue.length < LEN_DATE
-	const isDateFieldEmpty = currentDateValue.trim() == ''
-	const isInvalidDateValue = isDateFieldNotFound || isDateFieldEmpty
-	if(isInvalidDateValue){
+	const isDateFieldNotFound = currentDateValue.length < LEN_DATE;
+	const isDateFieldEmpty = currentDateValue.trim() == '';
+	const isInvalidDateValue = isDateFieldNotFound || isDateFieldEmpty;
+	if (isInvalidDateValue) {
 		const todayString = DateTimeUtil.todayString();
-		inserteeDate = todayString
+		inserteeDate = todayString;
 	}
 
 	const inserteeString = `${EMPTYSORTMARK} ${inserteeDate} ${EMPTYDOW} ${EMPTYTIME} ${EMPTYTIME} \n`;
@@ -780,8 +780,8 @@ export function completeSimply() {
 }
 
 function reportDialog() {
-	if(isMacOS){
-		return
+	if (isMacOS) {
+		return;
 	}
 
 	let reportArgs = '--today-dialog-report';
@@ -859,9 +859,12 @@ export function activate(context: vscode.ExtensionContext): void {
 		endTask();
 	});
 
-	const task_posteriori_end = vscode.commands.registerCommand('tritask.task.end.posteriori', () => {
-		posterioriEndTask();
-	});
+	const task_posteriori_end = vscode.commands.registerCommand(
+		'tritask.task.end.posteriori',
+		() => {
+			posterioriEndTask();
+		}
+	);
 
 	const task_walk = vscode.commands.registerCommand('tritask.task.walk', () => {
 		walkTask();
