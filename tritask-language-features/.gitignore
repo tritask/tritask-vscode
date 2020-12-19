@@ -3,6 +3,7 @@ out/
 *.trita
 *.log
 *.vsix
+*.DS_Store
 
 # テストコードで使う
 !src/test/suite/test.trita
