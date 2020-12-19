@@ -393,6 +393,7 @@
 			{
 				"command": "tritask.completion.simple",
 				"key": "alt+p",
+				"mac": "ctrl+p",
 				"when": "resourceExtname == .trita"
 			},
 			{
