@@ -319,10 +319,10 @@ export class LineTester {
 	}
 
 	static isInbox(line: string) {
-		const beforeDescription = line.substr(0, LEN_BEFORE_DESCRIPTION)
-		const isBeforeDescriptionEmpty = beforeDescription.trim() == ''
-		const isInbox = isBeforeDescriptionEmpty
-		return isInbox
+		const beforeDescription = line.substr(0, LEN_BEFORE_DESCRIPTION);
+		const isBeforeDescriptionEmpty = beforeDescription.trim() == '';
+		const isInbox = isBeforeDescriptionEmpty;
+		return isInbox;
 	}
 
 	static isNotStarted(line: string) {
@@ -474,9 +474,9 @@ export async function startTask() {
 	const doc = editor.document;
 	const currentLine = doc.lineAt(CursorPositioner.current()).text;
 
-	const isStarted = !(LineTester.isNotStarted(currentLine))
-	const isEnded = !(LineTester.isNotEnded(currentLine))
-	if (isStarted && isEnded){
+	const isStarted = !LineTester.isNotStarted(currentLine);
+	const isEnded = !LineTester.isNotEnded(currentLine);
+	if (isStarted && isEnded) {
 		return Promise.resolve(true);
 	}
 
