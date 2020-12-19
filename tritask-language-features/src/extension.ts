@@ -351,8 +351,22 @@ function showMenu() {
 // - テストコードからアクセスできるよう export する.
 
 export async function addTask() {
-	const todayString = DateTimeUtil.todayString();
-	const inserteeString = `${EMPTYSORTMARK} ${todayString} ${EMPTYDOW} ${EMPTYTIME} ${EMPTYTIME} \n`;
+	const editor = getEditor();
+	const doc = editor.document;
+	const currentLine = doc.lineAt(CursorPositioner.current()).text;
+	const currentDateValue = currentLine.substr(POS_DATE, LEN_DATE);
+
+	let inserteeDate = currentDateValue
+
+	const isDateFieldNotFound = currentDateValue.length < LEN_DATE
+	const isDateFieldEmpty = currentDateValue.trim() == ''
+	const isInvalidDateValue = isDateFieldNotFound || isDateFieldEmpty
+	if(isInvalidDateValue){
+		const todayString = DateTimeUtil.todayString();
+		inserteeDate = todayString
+	}
+
+	const inserteeString = `${EMPTYSORTMARK} ${inserteeDate} ${EMPTYDOW} ${EMPTYTIME} ${EMPTYTIME} \n`;
 	return _addLine(inserteeString);
 }
 
