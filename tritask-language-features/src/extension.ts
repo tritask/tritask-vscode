@@ -554,8 +554,10 @@ export async function endTask() {
 }
 
 export async function posterioriEndTask() {
-	console.log('Do posteriori-end.')
-	return Promise.resolve(true);
+	const yargs = getHelperYargs();
+	const commandLine = `${getHelperCommandline()} ${yargs} --end-now`;
+	console.log(`Posteriori End: "${commandLine}"`);
+	return saveAndExec(commandLine);
 }
 
 function jumpToStartingTask() {

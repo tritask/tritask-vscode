@@ -20,6 +20,7 @@
 		"onCommand:tritask.task.copy",
 		"onCommand:tritask.task.start",
 		"onCommand:tritask.task.end",
+		"onCommand:tritask.task.end.posteriori",
 		"onCommand:tritask.task.walk",
 		"onCommand:tritask.task.walk.1",
 		"onCommand:tritask.task.walk.today",
@@ -62,6 +63,11 @@
 			{
 				"command": "tritask.task.end",
 				"title": "End task",
+				"category": "Tritask"
+			},
+			{
+				"command": "tritask.task.end.posteriori",
+				"title": "End task(Posteriori)",
 				"category": "Tritask"
 			},
 			{
