@@ -5,5 +5,8 @@
 *.vsix
 *.zip
 
+# macos
+*.DS_Store
+
 # built distribution directory
 tritask-vscode/
