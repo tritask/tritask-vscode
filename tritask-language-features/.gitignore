@@ -3,3 +3,6 @@ out/
 *.trita
 *.log
 *.vsix
+
+# テストコードで使う
+!src/test/suite/test.trita
