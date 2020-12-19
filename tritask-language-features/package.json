@@ -147,6 +147,10 @@
 					"when": "resourceExtname == .trita"
 				},
 				{
+					"command": "tritask.task.end.posteriori",
+					"when": "resourceExtname == .trita"
+				},
+				{
 					"command": "tritask.task.walk",
 					"when": "resourceExtname == .trita"
 				},
@@ -230,6 +234,11 @@
 				{
 					"command": "tritask.task.end",
 					"group": "navigation@5",
+					"when": "resourceExtname == .trita"
+				},
+				{
+					"command": "tritask.task.end.posteriori",
+					"group": "navigation@6",
 					"when": "resourceExtname == .trita"
 				},
 				{
@@ -349,6 +358,12 @@
 				"command": "tritask.task.end",
 				"key": "alt+e",
 				"mac": "ctrl+e",
+				"when": "resourceExtname == .trita"
+			},
+			{
+				"command": "tritask.task.end.posteriori",
+				"key": "alt+q",
+				"mac": "ctrl+q",
 				"when": "resourceExtname == .trita"
 			},
 			{

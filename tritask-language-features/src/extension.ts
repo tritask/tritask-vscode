@@ -553,6 +553,11 @@ export async function endTask() {
 		});
 }
 
+export async function posterioriEndTask() {
+	console.log('Do posteriori-end.')
+	return Promise.resolve(true);
+}
+
 function jumpToStartingTask() {
 	const editor = getEditor();
 	const doc = editor.document;
@@ -832,6 +837,10 @@ export function activate(context: vscode.ExtensionContext): void {
 		endTask();
 	});
 
+	const task_posteriori_end = vscode.commands.registerCommand('tritask.task.end.posteriori', () => {
+		posterioriEndTask();
+	});
+
 	const task_walk = vscode.commands.registerCommand('tritask.task.walk', () => {
 		walkTask();
 	});
@@ -873,6 +882,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		sort,
 		task_start,
 		task_end,
+		task_posteriori_end,
 		jump_to_today_todo,
 		jump_to_starting,
 		jump_to_prev_separator,
