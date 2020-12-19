@@ -6,6 +6,8 @@ const exec = child_process.exec;
 
 moment.locale('ja');
 
+const isMacOS = process.platform == 'darwin'
+
 const SELF_EXTENSION_ID = 'stakiran.tritask-language-features';
 const HELPER_FILENAME = 'helper.py';
 
@@ -764,6 +766,10 @@ export function completeSimply() {
 }
 
 function reportDialog() {
+	if(isMacOS){
+		return
+	}
+
 	let reportArgs = '--today-dialog-report';
 	if (isSelected()) {
 		const yargs = getHelperYargs();
