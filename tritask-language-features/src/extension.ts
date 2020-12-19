@@ -768,10 +768,9 @@ function reportDialog() {
 }
 
 export function activate(context: vscode.ExtensionContext): void {
-	/* eslint-disable-next-line @typescript-eslint/no-empty-function */
 	const dummy_for_menu_separator = vscode.commands.registerCommand(
 		'tritask.dummy',
-		() => {}
+		() => {} // eslint-disable-line @typescript-eslint/no-empty-function
 	);
 
 	const menu_show = vscode.commands.registerCommand('tritask.menu.show', () => {
