@@ -13,7 +13,7 @@ $ npm install
 $ code .
 ```
 
-### デバッグ
+### Debug
 事前準備:
 
 - 1: .trita ファイルを適当に準備する
@@ -27,7 +27,7 @@ $ code .
 
 実行すると VSCode のウィンドウが新たに立ち上がるので、そのウィンドウで .trita ファイルを開きます。
 
-### テスト
+### Test
 unittest コードがあります。
 
 - 1: デバッグペインから Extension Tests を選ぶ
@@ -35,13 +35,16 @@ unittest コードがあります。
 
 実行すると VSCode のウィンドウが立ち上がり、テストが実行され、終わったら自動で閉じてから OUTPUT にテスト結果を表示します。
 
+### Build
+ルートの README を見てください。
+
 ### Lint
 
 ```
 $ npm run lint
 ```
 
-### prettying source
+### Pretty source
 
 ```
 $ npm run pretty 
